@@ -1,5 +1,4 @@
 import fs from 'fs/promises'
-import path from 'path'
 
 class ProductManager {
 
@@ -21,8 +20,7 @@ class ProductManager {
             const lastId = productos.length > 0 ? productos[productos.length - 1].id : 0
 
             newProducto.id = lastId + 1
-            console.log(newProducto)
-
+            
             productos.push(newProducto)
 
             await fs.writeFile(this.path, JSON.stringify(productos, null, 2))
@@ -58,7 +56,7 @@ class ProductManager {
     }
     async upDateProduct(update, producto_id) {
         try {
-            const { title, description, price, thumbnail, code, stock } = update
+            const { title, description, price, code, stock, category } = update
             let productos = await this.getProduct()
             let productFind = productos.find((prod) => prod.id == producto_id)
 
@@ -66,9 +64,9 @@ class ProductManager {
                 productFind.title = title
                 productFind.description = description
                 productFind.price = price
-                productFind.thumbnail = thumbnail
                 productFind.code = code
                 productFind.stock = stock
+                productFind.category = category
             }
 
             await fs.writeFile(this.path, JSON.stringify(productos, null, 2))

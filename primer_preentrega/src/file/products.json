@@ -1,3 +1,20 @@
 [
-    
+    {   
+        "id": 1,
+        "title": "Blazer Monet",
+        "description": "Disponible en 3 colores",
+        "price": 35000,
+        "code": "AA1",
+        "stock": 15,
+        "category": "Blazer"
+    },
+    {
+        "id": 2,
+        "title": "Pantalón Monet",
+        "description": "Disponible en 3 colores",
+        "price": 35000,
+        "code": "AA2",
+        "stock": 15,
+        "category": "Pantalon"
+    }
 ]
