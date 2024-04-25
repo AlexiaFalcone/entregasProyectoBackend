@@ -1,6 +1,6 @@
 import express from 'express'
 import __dirname from '../primer_preentrega/utils.js'
-// agregar las dos rutas cuando este OK//
+import routerProd from './src/routes/products.routes.js'
 const app = express()
 const PORT = 8080
 
@@ -8,6 +8,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use(express.static(__dirname + '/public'))
+app.use('api/products', routerProd)
 
 app.listen(PORT, ()=>{
     console.log(`Server running on ${PORT}`)

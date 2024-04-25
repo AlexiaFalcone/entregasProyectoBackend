@@ -2,9 +2,9 @@
 import { Router } from 'express'
 import fs from 'fs'
 
-const router = Router()
+const routerProd = Router()
 
-router.get('/products', (req, res) => {
+routerProd.get('/products', (req, res) => {
 
     fs.readFile('products.json', 'utf8', (err, data) => {
         if (err) {
@@ -23,7 +23,7 @@ router.get('/products', (req, res) => {
     })
 })
 
-router.get('/:pid', (req, res) => {
+routerProd.get('/:pid', (req, res) => {
     const prodId = parseInt(req.params.pid)
     fs.readFile('products.json', 'utf8', (err, data) => {
         if (err) {
@@ -37,7 +37,7 @@ router.get('/:pid', (req, res) => {
     })
 })
 
-router.post('/products', (req, res) => {
+routerProd.post('/products', (req, res) => {
     const { title, description, code, price, stock, category } = req.body
     const lastId = products.length > 0 ? products[products.length - 1].id : 0
     newProduct.id = lastId + 1
@@ -53,7 +53,10 @@ router.post('/products', (req, res) => {
         category
     }
     products.push(newProduct)
-    console.log(newProduct)
+    
     res.json({ message: "Producto agregado." })
     fs.writeFile('products.json', JSON.stringify(newProduct, null, 2))
+    console.log(newProduct)
 })
+
+export default routerProd
