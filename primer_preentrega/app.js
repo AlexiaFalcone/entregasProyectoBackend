@@ -8,7 +8,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use(express.static(__dirname + '/public'))
-app.use('api/products', routerProd)
+app.use('/products', routerProd)
 
 app.listen(PORT, ()=>{
     console.log(`Server running on ${PORT}`)

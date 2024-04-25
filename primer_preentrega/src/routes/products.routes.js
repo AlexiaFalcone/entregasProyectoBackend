@@ -1,42 +1,31 @@
 
 import { Router } from 'express'
-import fs from 'fs'
+import fs from 'fs/promises'
+import ProductManager from '../manager/productManeger.js'
 
 const routerProd = Router()
 
-routerProd.get('/products', (req, res) => {
+const manager = new ProductManager('../file/products.js')
 
-    fs.readFile('products.json', 'utf8', (err, data) => {
-        if (err) {
-            return res.status(404).json({ message: "No se ha encontrado ningún producto." })
-        }
-        const products = JSON.parse(data)
-        let limit = parseInt(req.query.limit)
-        let limitProduct = [...products]
+routerProd.get('/', async (req, res) => {
+    const products = await manager.getProduct()
+    let limit = parseInt(req.query.limit)
+    let limitProduct = [...products]
 
-        if (!isNaN(limit) && limit > 0) {
-            limitProduct = limitProduct.slice(0, limit)
-            res.json(limitProduct)
-        } else {
-            res.send(products)
-        }
-    })
+    if(!isNaN(limit) && limit > 0){
+        limitProduct = limitProduct.slice(0, limit)
+        res.json(limitProduct)
+    }else{
+        res.send(products) 
+    }    
+      
 })
 
-routerProd.get('/:pid', (req, res) => {
-    const prodId = parseInt(req.params.pid)
-    fs.readFile('products.json', 'utf8', (err, data) => {
-        if (err) {
-            return res.status(404).json({ message: "No se ha encontrado el producto solicitado." })
-        }
-        const products = JSON.parse(data)
-        const singleProduct = products.find((product) => product.id == prodId)
-        if (singleProduct) {
-            res.json(singleProduct)
-        }
-    })
+routerProd.get('/:pid', async (req, res) => {
+    const prodId = req.params.pid
+    const prodUnico = await manager.getProductById(prodId)
+    res.send(prodUnico)
 })
-
 routerProd.post('/products', (req, res) => {
     const { title, description, code, price, stock, category } = req.body
     const lastId = products.length > 0 ? products[products.length - 1].id : 0
