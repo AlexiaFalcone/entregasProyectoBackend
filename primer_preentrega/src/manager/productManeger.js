@@ -20,7 +20,6 @@ class ProductManager {
             const lastId = productos.length > 0 ? productos[productos.length - 1].id : 0
 
             newProducto.id = lastId + 1
-            console.log(newProducto)
             productos.push(newProducto)
 
             await fs.writeFile(this.path, JSON.stringify(productos, null, 2))
@@ -54,10 +53,10 @@ class ProductManager {
         }
     }
     async upDateProduct(update, producto_id) {
+        console.log(update, producto_id)
         try {
             const { title, description, price, code, stock, category } = update
             let productos = await this.getProduct()
-            console.log(productos)
             let productFind = productos.find((prod) => prod.id == producto_id)
 
             if (update) {
@@ -76,12 +75,12 @@ class ProductManager {
         }
     }
     async deleteProduct(producto_id) {
+        
         try {
             let productos = await this.getProduct()
             let productoFind = productos.findIndex((prod) => prod.id == producto_id)
-            console.log(productoFind)
             let productoEliminado = productos.splice(productoFind, 1)
-            console.log(productoEliminado)
+
             await fs.writeFile(this.path, JSON.stringify(productos, null, 2))
             return productoEliminado
         }catch(error){

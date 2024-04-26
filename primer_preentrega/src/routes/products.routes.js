@@ -32,7 +32,8 @@ routerProd.post('/products', async (req, res) => {
 
 routerProd.put('/:pid', async (req, res) =>{
     const prodId = req.params.pid
-    const prodUpdate = await manager.upDateProduct(prodId)
+    const product = req.body
+    const prodUpdate = await manager.upDateProduct(product, prodId)
     res.json(prodUpdate)
 })
 

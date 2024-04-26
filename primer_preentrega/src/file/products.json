@@ -1,38 +1,29 @@
 [
   {
-    "id": 1,
     "title": "Blazer Monet",
     "description": "Disponible en 3 colores",
     "price": 35000,
     "code": "AA1",
     "stock": 15,
-    "category": "Blazer"
+    "category": "Blazer",
+    "id": 1
   },
   {
-    "id": 2,
     "title": "Pantalón Monet",
     "description": "Disponible en 3 colores",
     "price": 35000,
     "code": "AA2",
     "stock": 15,
-    "category": "Pantalon"
+    "category": "Pantalon",
+    "id": 2
   },
   {
-    "title": "Blazer Monet",
-    "description": "Disponible en 3 colores",
-    "code": "AA3",
-    "price": 35000,
-    "stock": 15,
-    "category": "Blazer",
-    "id": 3
-  },
-  {
-    "title": "Blazer Monet",
+    "title": "Corset Monet",
     "description": "Disponible en 3 colores",
     "code": "AA4",
     "price": 35000,
     "stock": 15,
     "category": "Blazer",
-    "id": 4
+    "id": 3
   }
 ]
