@@ -20,7 +20,7 @@ class ProductManager {
             const lastId = productos.length > 0 ? productos[productos.length - 1].id : 0
 
             newProducto.id = lastId + 1
-            
+            console.log(newProducto)
             productos.push(newProducto)
 
             await fs.writeFile(this.path, JSON.stringify(productos, null, 2))
@@ -31,7 +31,6 @@ class ProductManager {
     async getProduct() {
         try {
             const data = await fs.readFile(this.path, 'utf8')
-
             return JSON.parse(data)
         } catch (error) {
             if (error.code === 'ENOENT') {
@@ -58,6 +57,7 @@ class ProductManager {
         try {
             const { title, description, price, code, stock, category } = update
             let productos = await this.getProduct()
+            console.log(productos)
             let productFind = productos.find((prod) => prod.id == producto_id)
 
             if (update) {

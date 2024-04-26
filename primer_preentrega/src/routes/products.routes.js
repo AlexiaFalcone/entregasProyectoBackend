@@ -30,4 +30,15 @@ routerProd.post('/products', async (req, res) => {
     res.json(newProduct)
 })
 
+routerProd.put('/:pid', async (req, res) =>{
+    const prodId = req.params.pid
+    const prodUpdate = await manager.upDateProduct(prodId)
+    res.json(prodUpdate)
+})
+
+routerProd.delete('/:pid', async(req, res)=>{
+    const prodId = req.params.pid
+    const prodDelete = await manager.deleteProduct(prodId)
+    res.json(prodDelete)
+})
 export default routerProd
