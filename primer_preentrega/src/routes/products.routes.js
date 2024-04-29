@@ -3,7 +3,6 @@ import { Router } from 'express'
 import ProductManager from '../manager/productManeger.js'
 
 const routerProd = Router()
-
 const manager = new ProductManager('../primer_preentrega/src/file/products.json')
 
 routerProd.get('/', async (req, res) => {

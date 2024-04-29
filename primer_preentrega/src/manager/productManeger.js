@@ -24,7 +24,7 @@ class ProductManager {
 
             await fs.writeFile(this.path, JSON.stringify(productos, null, 2))
         } catch (error) {
-            console.error("Error al crear el usuario", error)
+            console.error("Error al crear el producto", error)
         }
     }
     async getProduct() {
