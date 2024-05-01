@@ -1,29 +1,32 @@
 [
   {
     "title": "Blazer Monet",
-    "description": "Disponible en 3 colores",
-    "price": 35000,
+    "description": "Composición: Lino, Disponible en 3 colores",
+    "price": 28000,
     "code": "AA1",
     "stock": 15,
     "category": "Blazer",
-    "id": 1
+    "id": 1,
+    "status": true
   },
   {
     "title": "Pantalón Monet",
     "description": "Disponible en 3 colores",
-    "price": 35000,
+    "price": 22000,
     "code": "AA2",
     "stock": 15,
-    "category": "Pantalon",
-    "id": 2
+    "category": "Pantalón",
+    "id": 2,
+    "status": true
   },
   {
     "title": "Corset Monet",
     "description": "Disponible en 3 colores",
-    "code": "AA4",
-    "price": 35000,
-    "stock": 15,
-    "category": "Blazer",
-    "id": 3
+    "price": 15000,
+    "code": "AA3",
+    "stock": 11,
+    "category": "Corset",
+    "id": 3,
+    "status": true
   }
 ]

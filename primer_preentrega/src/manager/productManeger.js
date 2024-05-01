@@ -20,6 +20,7 @@ class ProductManager {
             const lastId = productos.length > 0 ? productos[productos.length - 1].id : 0
 
             newProducto.id = lastId + 1
+            newProducto.status = true
             productos.push(newProducto)
 
             await fs.writeFile(this.path, JSON.stringify(productos, null, 2))
