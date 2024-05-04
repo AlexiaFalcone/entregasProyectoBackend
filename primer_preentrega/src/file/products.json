@@ -28,5 +28,35 @@
     "category": "Corset",
     "id": 3,
     "status": true
+  },
+  {
+    "title": "Chaleco Monaco",
+    "description": "Disponible en 3 colores",
+    "price": 24000,
+    "code": "AA4",
+    "stock": 10,
+    "category": "Chaleco",
+    "id": 4,
+    "status": true
+  },
+  {
+    "title": "Camisa Sophie",
+    "description": "Disponible en 5 colores",
+    "price": 28000,
+    "code": "AA5",
+    "stock": 15,
+    "category": "Camisa",
+    "id": 5,
+    "status": true
+  },
+  {
+    "title": "Set Sophie",
+    "description": "Shot y remera de lino, disponible en 3 colores",
+    "price": 42000,
+    "code": "AA6",
+    "stock": 13,
+    "category": "Set",
+    "id": 6,
+    "status": true
   }
 ]
