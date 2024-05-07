@@ -11,8 +11,12 @@ const socket = io()
 function mostrarProd(product){
     const prodList = document.getElementById('prodList')
     const newProd = document.createElement('p')
+    const btnDelete = document.createElement ('button')
     newProd.textContent = `${product.id}:${product.title}`
+    btnDelete.classList.add("botonEliminar")
+    btnDelete.innerHTML= "Eliminar"
     prodList.appendChild(newProd)
+    newProd.appendChild(btnDelete)
 }
 
 socket.on('prodList', (products) =>{

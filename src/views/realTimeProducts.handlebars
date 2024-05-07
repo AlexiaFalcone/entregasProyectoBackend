@@ -1,7 +1,18 @@
-<div>
-    <input type="text" id="mensaje" placeholder="Escribe un producto">
+<form action="/src/routes/products.routes.js" method="post">
+    <label for="nameProd">Nombre del producto</label>
+    <input type="text" name="nameProd" id="name">
+    <label for="descriptionProd">Descripción del Producto</label>
+    <input type="text" id="description">
+    <label for="priceProd">Precio</label>
+    <input type="number" name="priceProd" id="price">
+    <label for="codeProd">Código del producto</label>
+    <input type="text" name="codeProd" id="code">
+    <label for="stockProd">Stock</label>
+    <input type="number" name="stockProd" id="stock">
+
     <button type="submit" id="btn-send" onclick="enviarMensaje()">Enviar</button>
-</div>
+</form>
+
 <div id="prodList"></div>
 
 <script src="/socket.io/socket.io.js"></script>
