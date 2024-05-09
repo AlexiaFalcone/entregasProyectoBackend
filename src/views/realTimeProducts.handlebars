@@ -1,4 +1,4 @@
-<form action="/src/routes/products.routes.js" method="post">
+<form enctype="multipart/form-data" id="productForm">
     <label for="nameProd">Nombre del producto</label>
     <input type="text" name="nameProd" id="name">
     <label for="descriptionProd">Descripción del Producto</label>
@@ -10,7 +10,7 @@
     <label for="stockProd">Stock</label>
     <input type="number" name="stockProd" id="stock">
 
-    <button type="submit" id="btn-send" onclick="enviarMensaje()">Enviar</button>
+    <button type="submit">Enviar</button>
 </form>
 
 <div id="prodList"></div>

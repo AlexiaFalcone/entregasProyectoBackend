@@ -25,6 +25,7 @@ routerProd.get('/:pid', async (req, res) => {
 
 routerProd.post('/products', async (req, res) => {
     const product = req.body
+    console.log(product)
     const newProduct = await manager.addProduct(product)
     res.json(newProduct)
 })
