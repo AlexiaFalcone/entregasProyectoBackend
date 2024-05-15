@@ -2,32 +2,28 @@ const socket = io()
 
 const form = document.getElementById('productForm')
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault()
-    let prodTitle = document.getElementById('name').value
-    let prodDescription = document.getElementById('description').value
-    let prodPrice = document.getElementById('price').value
-    let prodCode = document.getElementById('code').value
-    let prodStock = document.getElementById('stock').value
+const dataForm = ()=>{
+    form.addEventListener('submit', (e) => {
+        e.preventDefault()
+    
+        let prodTitle = document.getElementById('name').value
+        let prodDescription = document.getElementById('description').value
+        let prodPrice = document.getElementById('price').value
+        let prodCode = document.getElementById('code').value
+        let prodStock = document.getElementById('stock').value
+    
+        const data = {
+            title: prodTitle,
+            description: prodDescription,
+            price: prodPrice,
+            code: prodCode,
+            stock: prodStock
+        }    
+    })
+}
 
-    const data = {
-        title: prodTitle,
-        description: prodDescription,
-        price: prodPrice,
-        code: prodCode,
-        stock: prodStock
-    }
-    console.log(data)
-
-
-        //  const data = new FormData(form)
-        //  console.log(form)
-
-        await fetch('/products/products', {
-            method: 'POST',
-            body: data
-        })
-
+socket.emit('productForm', (data)=>{
+    dataForm(data)
 })
 
 // mostrar json
@@ -43,7 +39,6 @@ function mostrarProd(product) {
 }
 
 socket.on('prodList', (products) => {
-    // console.log(products)
     const prodList = document.getElementById('prodList')
     prodList.innerHTML = ""
     products.forEach(product => {

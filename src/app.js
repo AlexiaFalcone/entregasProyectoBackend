@@ -30,8 +30,12 @@ socketServer.on('connection', async socket =>{
     const products = await manager.getProduct()
     socket.emit("prodList", products)
     console.log("Nuevo cliente conectado")
-    
 })
 
+socketServer.on('connection', async socket =>{
+    socket.on('productForm', data)
+    const dataForm = await manager.addProduct(data)
+
+})
 
 
