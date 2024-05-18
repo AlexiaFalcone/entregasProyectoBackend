@@ -26,16 +26,26 @@ app.use('/', routerViews)
 
 const manager = new ProductManager('./file/products.json')
 
-socketServer.on('connection', async socket =>{
+socketServer.on('connection', async socket => {
+    console.log("Nuevo cliente conectado")
+
     const products = await manager.getProduct()
     socket.emit("prodList", products)
-    console.log("Nuevo cliente conectado")
+
+    socket.on('productForm', async data => {
+        await manager.addProduct(data)
+                
+        const products = await manager.getProduct()
+        socket.emit("prodList", products)
+    })
+
+    socket.on('productDelete', async data =>{
+        await manager.deleteProduct(data)
+        
+        const products = await manager.getProduct()
+        socket.emit("prodList", products)
+    })
 })
 
-socketServer.on('connection', async socket =>{
-    socket.on('productForm', data)
-    const dataForm = await manager.addProduct(data)
-
-})
 
 

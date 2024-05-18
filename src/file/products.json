@@ -58,5 +58,14 @@
     "category": "Set",
     "id": 6,
     "status": true
+  },
+  {
+    "title": "Vestido Sophie",
+    "description": "Disponible en 6 colores",
+    "price": 25000,
+    "code": "AA7",
+    "stock": "12",
+    "id": 7,
+    "status": true
   }
 ]

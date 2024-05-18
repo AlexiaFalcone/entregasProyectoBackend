@@ -1,40 +1,44 @@
 const socket = io()
 
+//Agregar producto con el form
 const form = document.getElementById('productForm')
 
-const dataForm = ()=>{
-    form.addEventListener('submit', (e) => {
-        e.preventDefault()
-    
-        let prodTitle = document.getElementById('name').value
-        let prodDescription = document.getElementById('description').value
-        let prodPrice = document.getElementById('price').value
-        let prodCode = document.getElementById('code').value
-        let prodStock = document.getElementById('stock').value
-    
-        const data = {
-            title: prodTitle,
-            description: prodDescription,
-            price: prodPrice,
-            code: prodCode,
-            stock: prodStock
-        }    
-    })
-}
+form.addEventListener('submit', (e) => {
+    e.preventDefault()
 
-socket.emit('productForm', (data)=>{
-    dataForm(data)
+    let prodTitle = document.getElementById('name').value
+    let prodDescription = document.getElementById('description').value
+    let prodPrice = parseFloat(document.getElementById('price').value)
+    let prodCode = document.getElementById('code').value
+    let prodStock = document.getElementById('stock').value
+
+    const data = {
+        title: prodTitle,
+        description: prodDescription,
+        price: prodPrice,
+        code: prodCode,
+        stock: prodStock
+    }
+    console.log(data)
+    socket.emit('productForm', (data))
+    form.reset()
 })
 
 // mostrar json
 function mostrarProd(product) {
     const prodList = document.getElementById('prodList')
-    const newProd = document.createElement('p')
+    const newProd = document.createElement('div')
+    const id = document.createElement('p')
+    const title = document.createElement('p')
     const btnDelete = document.createElement('button')
-    newProd.textContent = `${product.id}:${product.title}`
-    btnDelete.classList.add("botonEliminar")
+    id.textContent = `${product.id}`
+    title.textContent = `${product.title}`
+    newProd.id = 'productCard'
+    btnDelete.id = 'botonEliminar'
     btnDelete.innerHTML = "Eliminar"
     prodList.appendChild(newProd)
+    newProd.appendChild(id)
+    newProd.appendChild(title)
     newProd.appendChild(btnDelete)
 }
 
@@ -46,4 +50,18 @@ socket.on('prodList', (products) => {
             product
         )
     });
+    // Eliminar un producto
+    const btnDelete = document.querySelectorAll("#botonEliminar")
+    
+    btnDelete.forEach((button) =>{
+        button.addEventListener( 'click', (event)=>{
+            const id = event.target.previousSibling.previousSibling.textContent
+            
+            socket.emit('productDelete', id)
+        })
+    })
 })
+
+
+
+
