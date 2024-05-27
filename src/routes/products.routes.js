@@ -1,45 +1,61 @@
 
 import { Router } from 'express'
-import ProductManager from '../manager/productManeger.js'
+import productManagerDb from '../dao/manager/db/productManagerDb.js'
 
 const routerProd = Router()
-const manager = new ProductManager('../src/file/products.json')
+const manager = new productManagerDb()
 
 routerProd.get('/', async (req, res) => {
-    const products = await manager.getProduct()
-    const limit = parseInt(req.query.limit)
+    try {
+        const products = await manager.getProduct()
+        res.send(products)
+    } catch (error) {
+        res.status(500).json({ msg: 'No se encontraron productos' })
+    }
 
-    if(!isNaN(limit) && limit > 0){
-        const limitProduct = products.slice(0, limit)
-        res.json(limitProduct)
-    }else{
-        res.send(products) 
-    }    
 })
 
 routerProd.get('/:pid', async (req, res) => {
-    const prodId = req.params.pid
-    const prodUnico = await manager.getProductById(prodId)
-    res.send(prodUnico)
+    try {
+        const prodId = req.params.pid
+        const prodUnico = await manager.getProductById(prodId)
+        res.send(prodUnico)
+    } catch (error) {
+        res.status(500).json({ msg: 'No se encontró el producto.' })
+    }
+
 })
 
 routerProd.post('/products', async (req, res) => {
-    const product = req.body
-    console.log(product)
-    const newProduct = await manager.addProduct(product)
-    res.json(newProduct)
+    try {
+        const product = req.body
+        const newProd = await manager.addProduct(product)
+        res.send(newProd)
+    } catch (error) {
+        res.status(500).json({ msg: 'No se pudo agregar el producto.' })
+    }
 })
 
-routerProd.put('/:pid', async (req, res) =>{
-    const prodId = req.params.pid
-    const product = req.body
-    const prodUpdate = await manager.upDateProduct(product, prodId)
-    res.json(prodUpdate)
+routerProd.put('/:pid', async (req, res) => {
+    try {
+        const prodId = req.params.pid
+        const product = req.body
+        const prodUpdate = await manager.upDateProduct(product, prodId)
+        res.send(prodUpdate)
+    } catch (error) {
+        res.status(500).json({ msg: 'No se pudo actualizar el producto.' })
+    }
+
 })
 
-routerProd.delete('/:pid', async(req, res)=>{
-    const prodId = req.params.pid
-    const prodDelete = await manager.deleteProduct(prodId)
-    res.json(prodDelete)
+routerProd.delete('/:pid', async (req, res) => {
+    try {
+        const prodId = req.params.pid
+        const prodDelete = await manager.deleteProduct(prodId)
+        res.send(prodDelete)
+    } catch (error) {
+        res.status(500).json({ msg: 'No se pudo eliminar el producto.' })
+    }
 })
+
 export default routerProd

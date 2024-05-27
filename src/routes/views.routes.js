@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductManager from "../manager/productManeger.js";
+import ProductManager from "../dao/manager/fileSystem/productManeger.js";
 
 const routerViews = Router()
 const manager = new ProductManager('../src/file/products.json')
@@ -11,5 +11,8 @@ const manager = new ProductManager('../src/file/products.json')
 
  routerViews.get('/realtimeproducts', async (req, res) =>{
     res.render('realTimeProducts')
+ })
+ routerViews.get('/chat', async (req, res) =>{
+    res.render('chat')
  })
 export default routerViews
