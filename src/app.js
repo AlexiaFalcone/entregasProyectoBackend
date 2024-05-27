@@ -35,10 +35,8 @@ const manager = new ChatManager()
 socketServer.on('connection', async socket => {
     console.log("Nuevo cliente conectado")
 
-    // const chat = await manager.getMessages()
-    // socket.emit('messageLogs', chat)
+    socket.on('message', async data => {
 
-    socket.on('message', async data =>{
         await manager.createMessage(data)
 
         const chat = await manager.getMessages()

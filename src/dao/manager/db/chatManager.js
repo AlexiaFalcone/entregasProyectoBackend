@@ -5,9 +5,9 @@ class ChatManager {
 
     }
 
-    async createMessage() {
+    async createMessage(data) {
         try {
-            const message = await messagesModel.create({message})
+            const message = await messagesModel.create(data)
             return message
         } catch (error) {
             console.log(error)
