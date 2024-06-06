@@ -1,22 +1,23 @@
 import productModel from "../../models/products.model.js";
 
+
 class productManagerDb {
-    constructor(){
+    constructor() {
 
     }
 
-    async addProduct(newProd){
+    async addProduct(newProd) {
         try {
-            let {title, description, price, code, stock, category} = newProd
-            let createProd = await productModel.create({title, description, price, code, stock, category})
+            let { title, description, price, code, stock, category } = newProd
+            let createProd = await productModel.create({ title, description, price, code, stock, category })
             return createProd
-            
+
         } catch (error) {
-           console.log(error) 
+            console.log(error)
         }
     }
 
-    async getProduct(){
+    async getProduct() {
         try {
             let products = await productModel.find()
             return products
@@ -25,35 +26,62 @@ class productManagerDb {
         }
     }
 
-    async getProductById(id){
+    async getProductsPaginate(page, category, sort) {
+            
         try {
-           const singleProduct = await productModel.findOne(id)  
-           return singleProduct    
+            if (sort) {
+                let sortOrder = {};
+                sortOrder = sort === 'asc' ? 1 : -1;
+                const prodSort = await productModel.find().sort({price: sortOrder})
+                
+                return {
+                    code: 202,
+                    status: 'success',
+                    prodSort
+                }
+            }else{
+                let result = await productModel.paginate({ category: category }, { limit: 4, page, lean: true });
+                return {
+                    code: 202,
+                    status: 'success',
+                    result
+                }
+            }
+
         } catch (error) {
             console.log(error)
         }
     }
 
-    async upDateProduct(productId, update){
+    async getProductById(id) {
+        try {
+            const singleProduct = await productModel.findOne(id)
+            return singleProduct
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async upDateProduct(productId, update) {
         try {
             const { title, description, price, code, stock, category } = update
-            const prodFind = await productModel.findById({_id: productId})
+            const prodFind = await productModel.findById({ _id: productId })
 
             if (title) {
                 prodFind.title = title
-            }if(description){
+            } if (description) {
                 prodFind.description = description
-            }if(price){
+            } if (price) {
                 prodFind.price = price
-            }if(code){
+            } if (code) {
                 prodFind.code = code
-            }if(stock){
+            } if (stock) {
                 prodFind.stock = stock
-            }if(category){
+            } if (category) {
                 prodFind.category = category
             }
 
-            const updateItem = await productModel.updateOne({_id: productId}, prodFind)
+            const updateItem = await productModel.updateOne({ _id: productId }, prodFind)
             return updateItem
 
         } catch (error) {
@@ -61,10 +89,10 @@ class productManagerDb {
         }
     }
 
-    async deleteProduct(productId){
+    async deleteProduct(productId) {
         try {
-           const deleteOne = await productModel.deleteOne({_id: productId})
-           return deleteOne        
+            const deleteOne = await productModel.deleteOne({ _id: productId })
+            return deleteOne
 
         } catch (error) {
             console.log(error)

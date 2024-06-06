@@ -5,14 +5,44 @@ import productManagerDb from '../dao/manager/db/productManagerDb.js'
 const routerProd = Router()
 const manager = new productManagerDb()
 
+
+// routerProd.get('/', async (req, res) => {
+//     try {
+//         const products = await manager.getProduct()
+//         res.send(products)
+//     } catch (error) {
+//         res.status(500).json({ msg: 'No se encontraron productos' })
+//     }
+
+// })
+
 routerProd.get('/', async (req, res) => {
     try {
-        const products = await manager.getProduct()
-        res.send(products)
-    } catch (error) {
-        res.status(500).json({ msg: 'No se encontraron productos' })
-    }
+        let { limit = 10, page = 1, sort, category } = req.query;
+        console.log(sort)
+        limit = parseInt(limit);
+        page = parseInt(page);
+        let { prodSort, result, status } = await manager.getProductsPaginate(page, category, sort);
+        console.log(result)
+        let { docs, totalDocs, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage } = result;
+                
+        
+    return res.send({
+        status: status,
+        prodSort,
+        docs,
+        totalPages,
+        hasNextPage,
+        hasPrevPage,
+        page,
+        prevPage,
+        nextPage,
+        totalDocs    
+    })
 
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 routerProd.get('/:pid', async (req, res) => {
