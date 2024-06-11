@@ -17,25 +17,64 @@ routerCart.post('/', async (req, res) => {
 
 routerCart.get('/:cid', async (req, res)=>{
     try {
-        const cartId = req.params.cid
-        const sigleCart = await manager.getCartById(cartId)
+        const cid = req.params.cid
+        console.log(cartId)
+        const sigleCart = await manager.getCartById({cid})
         res.send(sigleCart)
     } catch (error) {
         res.status(404).json({msg: 'No se encontro el carrito'})
     }
 })
 
-// routerCart.post('/:cid/product/:pid', async (req, res)=>{
-//     try {
-//         const cartId = req.params.cid
-//         const productId = req.params.pid
-//         const product = req.body
-//         const addProd = await manager.addProductCart(cartId, product, productId)
-//         res.json(addProd)
+ routerCart.post('/:cid/product/:pid', async (req, res)=>{
+     try {
+         const cid = req.params.cid         
+         const pid = req.params.pid
+         const addProd = await manager.addProduct(cid, pid)
+         res.send(addProd)
         
-//     } catch (error) {
-//         res.status(500).json({msg: 'El producto no se pudo agregar'})
-//     }
-// })
+     } catch (error) {
+         res.status(500).json({msg: 'El producto no se pudo agregar'})
+     }
+ })
+
+ routerCart.delete('/:cid/product/:pid', async(req, res) =>{
+    try {
+        const cid = req.params.cid
+        const pid = req.params.pid
+        const deleteSigleProd = await manager.deleteOne(cid, pid)
+        console.log(deleteSigleProd)
+        res.send(deleteSigleProd)
+
+    } catch (error) {
+        res.status(500).json({msg: 'El producto no se pudo eliminar'})
+    }
+ })
+ 
+ routerCart.put('/carts/:cid', async (req, res)=>{
+    try {
+        const cid = req.params.cid
+        const newCart = req.body
+        const cart = await manager.getCartById(cid)
+
+        const upDateOneCart = await manager.upDateCart(cart, newCart)
+        return upDateOneCart
+        
+    } catch (error) {
+        res.status(500).json({msg: 'No se pudo actualizar el carrito'}) 
+    }
+ })
+
+ routerCart.delete('/carts/:cid', async (req, res)=>{
+    try {
+        const cid = req.params.cid
+        const clearOneCart = await manager.deleteProductsInCart(cid)
+        console.log(clearOneCart)
+        res.send(clearOneCart)
+        
+    } catch (error) {
+        res.status(500).json({msg: 'No se pudo eliminar los productos del carrito'}) 
+    }
+ })
 
 export default routerCart 

@@ -32,12 +32,12 @@ class productManagerDb {
             if (sort) {
                 let sortOrder = {};
                 sortOrder = sort === 'asc' ? 1 : -1;
-                const prodSort = await productModel.find().sort({price: sortOrder})
-                
+                const result = await productModel.paginate({},{sort: {price: sortOrder}, lean:true})
+                console.log(result.docs)
                 return {
                     code: 202,
                     status: 'success',
-                    prodSort
+                    result
                 }
             }else{
                 let result = await productModel.paginate({ category: category }, { limit: 4, page, lean: true });

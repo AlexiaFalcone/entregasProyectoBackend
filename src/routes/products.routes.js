@@ -19,17 +19,14 @@ const manager = new productManagerDb()
 routerProd.get('/', async (req, res) => {
     try {
         let { limit = 10, page = 1, sort, category } = req.query;
-        console.log(sort)
         limit = parseInt(limit);
         page = parseInt(page);
-        let { prodSort, result, status } = await manager.getProductsPaginate(page, category, sort);
-        console.log(result)
-        let { docs, totalDocs, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage } = result;
+        let { result, status } = await manager.getProductsPaginate(page, category, sort);
+        let {docs, totalDocs, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage } = result;
                 
         
     return res.send({
         status: status,
-        prodSort,
         docs,
         totalPages,
         hasNextPage,
@@ -37,8 +34,11 @@ routerProd.get('/', async (req, res) => {
         page,
         prevPage,
         nextPage,
-        totalDocs    
+        totalDocs,
+        prevLink: page > 1 ? `/products?limit=${limit}&page=${page - 1}&sort=${sort || ''}&query=${category || ''}` : null,
+        nextLink: page < totalPages ? `/products?limit=${limit}&page=${page + 1}&sort=${sort || ''}&query=${category || ''}` : null    
     })
+    
 
     } catch (error) {
         console.log(error)
