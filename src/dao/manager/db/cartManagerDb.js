@@ -23,8 +23,9 @@ class CartManegerDb {
     }
 
     async getCartById(cid) {
+        
         try {
-            const singleCart = await cartModel.find({}, { cid })
+            const singleCart = await cartModel.find({_id: cid }).populate('products.product').lean();
             return singleCart
         } catch (error) {
             console.log(error)
@@ -55,6 +56,36 @@ class CartManegerDb {
         }
     }
 
+    async updateQuantity(cid, pid, newQuantity) {
+
+        try {
+            const cart = await cartModel.find({ _id: cid })
+            const updateProd = cart[0].products.findIndex(product => product.product._id == pid)
+
+            if (updateProd == -1) {
+                const product = {
+                    product: pid,
+                    quantity: 1
+                }
+                cart[0].products.push(product);
+            } else {
+                if (!newQuantity.quantity) {
+                    const value = cart[0].products[updateProd].quantity;
+                    cart[0].products[updateProd].quantity = value + 1;
+                } else {
+                    cart[0].products[updateProd].quantity = newQuantity.quantity
+                }
+            }
+
+            const newQuantityProd = await cartModel.updateOne({ _id: cart[0]._id }, { $set: cart[0] })
+            console.log(newQuantityProd)
+            return newQuantityProd
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     async upDateCart(cart, newCart) {
         try {
             cart[0].products = [];
@@ -70,7 +101,7 @@ class CartManegerDb {
     async deleteOne(cid, pid) {
         const cart = await cartModel.find({ _id: cid }).lean().populate('products.product');
         const deleteProd = cart[0].products.findIndex(product => product.product._id.equals(pid));
-        
+
         if (deleteProd === -1) {
             console.log('El producto no existe')
         } else {
@@ -80,13 +111,13 @@ class CartManegerDb {
         return result
     }
 
-    async deleteProductsInCart(cid){
+    async deleteProductsInCart(cid) {
         try {
-            const clearCart = await cartModel.updateOne({_id: cid}, { $set: {products: []}})
+            const clearCart = await cartModel.updateOne({ _id: cid }, { $set: { products: [] } })
             return clearCart
-            
+
         } catch (error) {
-          console.log(error)  
+            console.log(error)
         }
     }
 }

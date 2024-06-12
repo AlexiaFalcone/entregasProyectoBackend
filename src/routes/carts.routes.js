@@ -18,8 +18,7 @@ routerCart.post('/', async (req, res) => {
 routerCart.get('/:cid', async (req, res)=>{
     try {
         const cid = req.params.cid
-        console.log(cartId)
-        const sigleCart = await manager.getCartById({cid})
+        const sigleCart = await manager.getCartById(cid)
         res.send(sigleCart)
     } catch (error) {
         res.status(404).json({msg: 'No se encontro el carrito'})
@@ -38,18 +37,6 @@ routerCart.get('/:cid', async (req, res)=>{
      }
  })
 
- routerCart.delete('/:cid/product/:pid', async(req, res) =>{
-    try {
-        const cid = req.params.cid
-        const pid = req.params.pid
-        const deleteSigleProd = await manager.deleteOne(cid, pid)
-        console.log(deleteSigleProd)
-        res.send(deleteSigleProd)
-
-    } catch (error) {
-        res.status(500).json({msg: 'El producto no se pudo eliminar'})
-    }
- })
  
  routerCart.put('/carts/:cid', async (req, res)=>{
     try {
@@ -62,6 +49,32 @@ routerCart.get('/:cid', async (req, res)=>{
         
     } catch (error) {
         res.status(500).json({msg: 'No se pudo actualizar el carrito'}) 
+    }
+ })
+
+ routerCart.put('/carts/:cid/products/:pid', async (req, res) =>{
+    try {
+        const cid = req.params.cid
+        const pid = req.params.pid
+        const newQuantity = req.body
+
+        const update = await manager.updateQuantity(cid, pid, newQuantity)
+        res.send(update)
+        
+    } catch (error) {
+        res.status(500).json({msg: 'No se pudo actualizar cantidad'})
+    }
+ })
+ routerCart.delete('/:cid/product/:pid', async(req, res) =>{
+    try {
+        const cid = req.params.cid
+        const pid = req.params.pid
+        const deleteSigleProd = await manager.deleteOne(cid, pid)
+        console.log(deleteSigleProd)
+        res.send(deleteSigleProd)
+
+    } catch (error) {
+        res.status(500).json({msg: 'El producto no se pudo eliminar'})
     }
  })
 
