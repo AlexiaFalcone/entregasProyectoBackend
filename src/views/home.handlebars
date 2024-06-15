@@ -1,9 +1,22 @@
+<form method="get" action="/products">
+    Filtrar por categoría:
+    <select name="category">
+        <option selected>Todas</option>
+        <option name="Camisas" value="Camisas">Camisas</option>
+        <option name="Pantalón" value="Pantalón">Pantalones</option>
+        <option name="Blazer" value="Blazer">Blazer</option>
+        <option name="Pollera" value="Pollera">Pollera</option>
+        <option name="Tapado" value="Tapado">Tapado</option>
+        <option name="Top" value="Top">Top</option>
+    </select>
+    <input type="submit" value="enviar">
+</form>
 <div>
     <h1>PRODUCTOS DISPONIBLES</h1>
     <div>
-         {{#each prod}}
-           <p>{{this.title}}</p>
+        {{#each response}}
+        <p>{{this.title}}</p>
         {{/each}}
     </div>
-   
+
 </div>

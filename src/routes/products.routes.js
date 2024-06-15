@@ -16,7 +16,7 @@ const manager = new productManagerDb()
 
 // })
 
-routerProd.get('/', async (req, res) => {
+routerProd.get('/products', async (req, res) => {
     try {
         let { limit = 10, page = 1, sort, category } = req.query;
         limit = parseInt(limit);
@@ -35,13 +35,13 @@ routerProd.get('/', async (req, res) => {
         prevPage,
         nextPage,
         totalDocs,
-        prevLink: page > 1 ? `/products?limit=${limit}&page=${page - 1}&sort=${sort || ''}&query=${category || ''}` : null,
-        nextLink: page < totalPages ? `/products?limit=${limit}&page=${page + 1}&sort=${sort || ''}&query=${category || ''}` : null    
+        prevLink: page > 1 ? `/home?limit=${limit}&page=${page - 1}&sort=${sort || ''}&query=${category || ''}` : null,
+        nextLink: page < totalPages ? `/home?limit=${limit}&page=${page + 1}&sort=${sort || ''}&query=${category || ''}` : null    
     })
     
 
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ msg: 'No se encontraron productos' })
     }
 })
 

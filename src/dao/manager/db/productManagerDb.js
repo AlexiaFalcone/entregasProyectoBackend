@@ -39,6 +39,12 @@ class productManagerDb {
                     status: 'success',
                     result
                 }
+            }if(!category){
+
+                let allProd = await productModel.paginate({}, {limit:4, page, lean: true})
+                //console.log(allProd)
+                return allProd
+                
             }else{
                 let result = await productModel.paginate({ category: category }, { limit: 4, page, lean: true });
                 return {
