@@ -13,7 +13,7 @@ class productManagerDb {
             return createProd
 
         } catch (error) {
-            console.log(error)
+            throw error
         }
     }
 
@@ -22,49 +22,50 @@ class productManagerDb {
             let products = await productModel.find()
             return products
         } catch (error) {
-            console.log(error)
+            throw error
         }
     }
 
     async getProductsPaginate(page, category, sort) {
-            
         try {
             if (sort) {
-                let sortOrder = {};
-                sortOrder = sort === 'asc' ? 1 : -1;
-                const result = await productModel.paginate({},{sort: {price: sortOrder}, lean:true})
-                console.log(result.docs)
-                return {
-                    code: 202,
-                    status: 'success',
-                    result
-                }
-            }if(!category){
+                 let sortOrder = {};
+                 sortOrder = sort === 'asc' ? 1 : -1;
+                 const result = await productModel.paginate({},{sort: {price: sortOrder}, lean:true})
+                 return {
+                     code: 202,
+                     status: 'success',
+                     result
+                 }
+             }if(!category){
 
-                let allProd = await productModel.paginate({}, {limit:4, page, lean: true})
-                //console.log(allProd)
-                return allProd
-                
-            }else{
-                let result = await productModel.paginate({ category: category }, { limit: 4, page, lean: true });
-                return {
+                 let allProd = await productModel.paginate({}, {limit:6, page, lean: true})
+                 
+                 return {
                     code: 202,
-                    status: 'success',
-                    result
+                    status: "success",
+                    allProd
                 }
-            }
 
-        } catch (error) {
-            console.log(error)
-        }
-    }
+             }else{
+                 const query = category ? {category} : {};
+                 let result = await productModel.paginate(query , { limit: 4, page, lean: true });
+                 return {
+                     code: 202,
+                     status: 'success',
+                     result
+                 }
+          }
+        }catch{
+            throw error
+        }};
 
     async getProductById(id) {
         try {
             const singleProduct = await productModel.findOne(id)
             return singleProduct
         } catch (error) {
-            console.log(error)
+            throw error
         }
     }
 
@@ -91,7 +92,7 @@ class productManagerDb {
             return updateItem
 
         } catch (error) {
-            console.log(error)
+            throw error
         }
     }
 
@@ -101,7 +102,7 @@ class productManagerDb {
             return deleteOne
 
         } catch (error) {
-            console.log(error)
+            throw error
         }
     }
 }

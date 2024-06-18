@@ -1,4 +1,4 @@
-<form method="get" action="/products">
+<form method="GET" action="/products">
     Filtrar por categoría:
     <select name="category">
         <option selected>Todas</option>
@@ -14,8 +14,9 @@
 <div>
     <h1>PRODUCTOS DISPONIBLES</h1>
     <div>
-        {{#each response}}
+        {{#each docs }}
         <p>{{this.title}}</p>
+        <p>{{this.price}}</p>
         {{/each}}
     </div>
 
