@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, response } from "express";
 import productManagerDb from "../dao/manager/db/productManagerDb.js";
 
 const routerViews = Router()
@@ -9,9 +9,24 @@ routerViews.get('/products', async (req, res) => {
       let { limit = 10, page = 1, sort, category } = req.query;
       limit = parseInt(limit);
       page = parseInt(page);
-      let result = await manager.getProductsPaginate(page, category, sort);
-      console.log(result)
-      return res.render('home', result)
+      let {status, result} = await manager.getProductsPaginate(page, category, sort);
+      const {docs, totalPages, prevPage, nextPage, hasPrevPage, hasNextPage, prevLink, nextLink} = result
+      result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}` : '';
+      result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}` : '';
+      
+      //console.log(result)
+      return res.render('home', {
+         status: status,
+         docs,
+         totalPages,
+         page,
+         prevPage,
+         nextPage,
+         hasPrevPage,
+         hasNextPage,
+         prevLink,
+         nextLink
+      })
    } catch (error) {
       res.status(500).json({ msg: 'No se encontraron productos' })
    }

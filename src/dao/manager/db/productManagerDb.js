@@ -28,7 +28,16 @@ class productManagerDb {
 
     async getProductsPaginate(page, category, sort) {
         try {
-            if (sort) {
+        if(!category){
+
+            const result = await productModel.paginate({}, {page, limit:6, lean: true})
+         
+            return {
+               code: 202,
+               status: "success",
+               result
+           }
+        }if (sort) {
                  let sortOrder = {};
                  sortOrder = sort === 'asc' ? 1 : -1;
                  const result = await productModel.paginate({},{sort: {price: sortOrder}, lean:true})
@@ -37,15 +46,6 @@ class productManagerDb {
                      status: 'success',
                      result
                  }
-             }if(!category){
-
-                 let allProd = await productModel.paginate({}, {limit:6, page, lean: true})
-                 
-                 return {
-                    code: 202,
-                    status: "success",
-                    allProd
-                }
 
              }else{
                  const query = category ? {category} : {};

@@ -11,6 +11,14 @@
     </select>
     <input type="submit" value="enviar">
 </form>
+<form method="GET" action="/products">
+    Filtrar por precio:
+    <select name="sort">
+        <option name="asc" value="asc">Mayor valor</option>
+        <option name="desc" value="desc">Menor valor</option>
+    </select>
+    <input type="submit" value="enviar">
+</form>
 <div>
     <h1>PRODUCTOS DISPONIBLES</h1>
     <div>
@@ -19,5 +27,5 @@
         <p>{{this.price}}</p>
         {{/each}}
     </div>
-
 </div>
+
