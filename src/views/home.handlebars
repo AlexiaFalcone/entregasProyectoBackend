@@ -2,7 +2,7 @@
     Filtrar por categoría:
     <select name="category">
         <option selected>Todas</option>
-        <option name="Camisas" value="Camisas">Camisas</option>
+        <option name="Camisas" value="Camisa">Camisas</option>
         <option name="Pantalón" value="Pantalón">Pantalones</option>
         <option name="Blazer" value="Blazer">Blazer</option>
         <option name="Pollera" value="Pollera">Pollera</option>
@@ -14,8 +14,8 @@
 <form method="GET" action="/products">
     Filtrar por precio:
     <select name="sort">
-        <option name="asc" value="asc">Mayor valor</option>
-        <option name="desc" value="desc">Menor valor</option>
+        <option name="asc" value="asc">Menor valor</option>
+        <option name="desc" value="desc">Mayor valor</option>
     </select>
     <input type="submit" value="enviar">
 </form>
@@ -25,7 +25,21 @@
         {{#each docs }}
         <p>{{this.title}}</p>
         <p>{{this.price}}</p>
+        <input type="submit" value="Agregar">
         {{/each}}
     </div>
 </div>
 
+<br />
+
+<div>
+    {{#if hasPrevPage}}
+    <a href={{this.prevLink}}>Anterior</a>
+    {{/if}}
+
+    {{this.page}}
+
+    {{#if hasNextPage}}
+    <a href={{this.nextLink}}>Siguiente </a>
+    {{/if}}
+</div>

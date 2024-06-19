@@ -6,15 +6,13 @@ const manager = new productManagerDb()
 
 routerViews.get('/products', async (req, res) => {
    try {
+
       let { limit = 10, page = 1, sort, category } = req.query;
       limit = parseInt(limit);
       page = parseInt(page);
-      let {status, result} = await manager.getProductsPaginate(page, category, sort);
-      const {docs, totalPages, prevPage, nextPage, hasPrevPage, hasNextPage, prevLink, nextLink} = result
-      result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}` : '';
-      result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}` : '';
-      
-      //console.log(result)
+      let { status, result } = await manager.getProductsPaginate(page, category, sort);
+      const { docs, totalPages, prevPage, nextPage, hasPrevPage, hasNextPage, prevLink, nextLink } = result
+
       return res.render('home', {
          status: status,
          docs,

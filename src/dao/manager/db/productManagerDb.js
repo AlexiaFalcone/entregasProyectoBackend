@@ -28,37 +28,37 @@ class productManagerDb {
 
     async getProductsPaginate(page, category, sort) {
         try {
-        if(!category){
+            if (!category && !sort) {
 
-            const result = await productModel.paginate({}, {page, limit:6, lean: true})
-         
-            return {
-               code: 202,
-               status: "success",
-               result
-           }
-        }if (sort) {
-                 let sortOrder = {};
-                 sortOrder = sort === 'asc' ? 1 : -1;
-                 const result = await productModel.paginate({},{sort: {price: sortOrder}, lean:true})
-                 return {
-                     code: 202,
-                     status: 'success',
-                     result
-                 }
+                const result = await productModel.paginate({}, { page, limit: 6, lean: true })
+                result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}` : '';
+                result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}` : '';
 
-             }else{
-                 const query = category ? {category} : {};
-                 let result = await productModel.paginate(query , { limit: 4, page, lean: true });
-                 return {
-                     code: 202,
-                     status: 'success',
-                     result
-                 }
-          }
-        }catch{
+                return {
+                    code: 202,
+                    status: "success",
+                    result
+                }
+            } else {
+
+                const query = category ? { category } : {};
+
+                const sortOption = sort ? { price: sort === "asc" ? 1 : -1 } : {};
+
+                const result = await productModel.paginate(query, { sort: sortOption, limit: 4, page, lean: true });
+                result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}` : '';
+                result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}` : '';
+
+                return {
+                    code: 202,
+                    status: 'success',
+                    result
+                }
+            }
+        } catch {
             throw error
-        }};
+        }
+    };
 
     async getProductById(id) {
         try {
