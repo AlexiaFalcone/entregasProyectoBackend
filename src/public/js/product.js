@@ -10,19 +10,14 @@ btnAddToCart.forEach((button) => {
        
         const upDateResponse = await fetch(`/api/carts/664e83f3b97d9c5539ca13e8/product/${productId}`, { method: "POST" });
 
-        if (upDateResponse){
-            return Swal.fire({
+        if(upDateResponse){
+             Swal.fire({
                 icon: 'success',
                 title: 'El producto se agregó de manera exitosa',
                 timer: 1500
             });
         }else{
-            return Swal.fire({
-                icon: 'error',
-                title: 'No se pudo agregar el producto.',  
-                timer: 1500
-            });
+            console.log("No se pudo agregar el producto.")
         }
     })
 })
-
