@@ -23,9 +23,10 @@
     <h1>PRODUCTOS DISPONIBLES</h1>
     <div>
         {{#each docs }}
-        <p>{{this.title}}</p>
-        <p>{{this.price}}</p>
-        <input type="submit" value="Agregar">
+        <p>Producto: {{this.title}}</p>
+        <p>Precio: ${{this.price}}</p>
+        <p class="productId">ID:{{this._id}}</p>
+        <input id="btnAddProd" type="submit" value="Agregar">
         {{/each}}
     </div>
 </div>
@@ -43,3 +44,5 @@
     <a href={{this.nextLink}}>Siguiente </a>
     {{/if}}
 </div>
+
+<script src="/js/product.js"></script>

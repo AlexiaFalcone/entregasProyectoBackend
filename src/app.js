@@ -26,8 +26,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname + '/public'))
 
-app.use('/products', routerProd)
-app.use('/carts', routerCart)
+app.use('/api/products', routerProd)
+app.use('/api/carts', routerCart)
 app.use('/', routerViews)
 
 const manager = new ChatManager()

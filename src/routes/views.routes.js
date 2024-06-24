@@ -1,8 +1,10 @@
 import { Router, response } from "express";
 import productManagerDb from "../dao/manager/db/productManagerDb.js";
+import CartManegerDb from "../dao/manager/db/cartManagerDb.js";
 
 const routerViews = Router()
 const manager = new productManagerDb()
+const managerCart = new CartManegerDb()
 
 routerViews.get('/products', async (req, res) => {
    try {
@@ -27,6 +29,20 @@ routerViews.get('/products', async (req, res) => {
       })
    } catch (error) {
       res.status(500).json({ msg: 'No se encontraron productos' })
+   }
+})
+
+routerViews.get('/carts/:cid', async (req, res) =>{
+   try {
+      
+       const cid = req.params.cid
+       const cartView = await managerCart.getCart(cid);
+       const productCart = cartView[0].products
+
+      return res.render('cart', {productCart})
+
+   } catch (error) {
+      res.status(500).json({ msg: 'No se encontró el carrito' })
    }
 })
 

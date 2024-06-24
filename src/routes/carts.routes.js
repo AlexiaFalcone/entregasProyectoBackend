@@ -18,7 +18,7 @@ routerCart.post('/', async (req, res) => {
 routerCart.get('/:cid', async (req, res)=>{
     try {
         const cid = req.params.cid
-        const sigleCart = await manager.getCartById(cid)
+        const sigleCart = await manager.getCart(cid)
         res.send(sigleCart)
     } catch (error) {
         res.status(404).json({msg: 'No se encontro el carrito'})
@@ -38,11 +38,11 @@ routerCart.get('/:cid', async (req, res)=>{
  })
 
  
- routerCart.put('/carts/:cid', async (req, res)=>{
+ routerCart.put('/:cid', async (req, res)=>{
     try {
         const cid = req.params.cid
         const newCart = req.body
-        const cart = await manager.getCartById(cid)
+        const cart = await manager.getCart(cid)
 
         const upDateOneCart = await manager.upDateCart(cart, newCart)
         return upDateOneCart
@@ -52,7 +52,7 @@ routerCart.get('/:cid', async (req, res)=>{
     }
  })
 
- routerCart.put('/carts/:cid/products/:pid', async (req, res) =>{
+ routerCart.put('/:cid/products/:pid', async (req, res) =>{
     try {
         const cid = req.params.cid
         const pid = req.params.pid

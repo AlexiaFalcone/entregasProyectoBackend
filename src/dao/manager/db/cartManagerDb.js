@@ -13,20 +13,16 @@ class CartManegerDb {
             console.log(error)
         }
     }
-    async getCart() {
-        try {
-            const cart = await cartModel.find()
-            return cart
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
-    async getCartById(cid) {
-        
+    async getCart(cid) {
         try {
-            const singleCart = await cartModel.find({_id: cid }).populate('products.product').lean();
-            return singleCart
+            if (cid) {
+                const singleCart = await cartModel.find({ _id: cid }).populate('products.product').lean();
+                return singleCart
+            } else {
+                const cart = await cartModel.find().populate('products.product').lean()
+                return cart
+            }
         } catch (error) {
             console.log(error)
         }
