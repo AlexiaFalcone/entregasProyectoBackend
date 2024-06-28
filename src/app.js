@@ -1,4 +1,6 @@
 import express from 'express'
+import cookieParser from 'cookie-parser'
+import session from 'express-session'
 import handlebars from 'express-handlebars'
 import { Server } from 'socket.io'
 import __dirname from './utils.js'
@@ -7,6 +9,8 @@ import routerProd from './routes/products.routes.js'
 import routerCart from './routes/carts.routes.js'
 import ChatManager from './dao/manager/db/chatManager.js'
 import mongoose from 'mongoose'
+import MongoStore from 'connect-mongo'
+import routerSession from './routes/session.js'
 
 const app = express()
 const PORT = 8080
@@ -25,9 +29,17 @@ app.set('view engine', 'handlebars')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname + '/public'))
+app.use(cookieParser())
+app.use(session({
+    secret: 'secretkey',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({mongoUrl:"mongodb+srv://alexiafalcone1995:carmina2024@cluster0.wdy9r2h.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0"})
+}))
 
 app.use('/api/products', routerProd)
 app.use('/api/carts', routerCart)
+app.use('/api/sessions', routerSession)
 app.use('/', routerViews)
 
 const manager = new ChatManager()
