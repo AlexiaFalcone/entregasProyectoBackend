@@ -38,6 +38,14 @@ routerSession.get('faillogin', async(req, res)=>{
     res.send({error: 'No se pudo encontrar el usuario'})
 })
 
+routerSession.get("/github", passport.authenticate("github",{scope:["user:email"]}),async(req,res)=>{})
+
+
+routerSession.get("/githubcallback",passport.authenticate("github",{failureRedirect:"/login"}),async(req,res)=>{
+    req.session.user=req.user
+    res.redirect('/products')
+})
+
 routerSession.post('/logout', async (req, res) => {
     try {
         console.log("Sesión cerrada")

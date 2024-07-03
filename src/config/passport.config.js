@@ -1,5 +1,6 @@
 import passport from 'passport';
 import local from 'passport-local';
+import githubStrategy from 'passport-github2';
 import userModel from '../dao/models/users.model.js';
 import { createHash, isValidPassword } from '../utils.js'
 
@@ -37,16 +38,46 @@ const initializePassport = () => {
                 return done("No se pudo encontrar el usuario" + error)
             }
         }
-    ))
+    ));
+    
+    passport.use('github', new githubStrategy({
+        clientID: "Iv23li5fPWmK4DK5QVXc",
+        clientSecret: "e4e4922f812fb4f9b23147e9349982f539c32ee6",
+        callbackURL: "http://localhost:8080/api/sessions/githubcallback"
+    }, async(accessToken, refreshToken, profile, done)=>{
+        try {
+            console.log(profile)
+            let user= await userModel.findOne({email: profile._json.email});
+
+            if(!user){
+                let newUser={
+                    first_name: profile._json.name,
+                    last_name:"",
+                    age: 29,
+                    email: profile._json.email,
+                    password:""
+                }
+
+                let result= await userModel.create(newUser);
+                done(null, result)
+
+            }else{
+                done(null, user)
+            }
+        } catch (error) {
+            return done(error)
+        }
+    }
+    ));
 
     passport.serializeUser((user, done) => {
         done(null, user._id)
-    })
+    });
 
     passport.deserializeUser(async (id, done) => {
         let user = await userModel.findById(id)
         done(null, user)
-    })
+    });
 
     passport.use('login', new localStrategy({ usernameField: 'email' }, async (username, password, done) => {
         try {
