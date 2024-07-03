@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import handlebars from 'express-handlebars'
 import { Server } from 'socket.io'
-import __dirname from './utils.js'
+import {__dirname} from './utils.js'
 import routerViews from './routes/views.routes.js'
 import routerProd from './routes/products.routes.js'
 import routerCart from './routes/carts.routes.js'
@@ -11,6 +11,8 @@ import ChatManager from './dao/manager/db/chatManager.js'
 import mongoose from 'mongoose'
 import MongoStore from 'connect-mongo'
 import routerSession from './routes/session.js'
+import passport from 'passport'
+import initializePassport from './config/passport.config.js'
 
 const app = express()
 const PORT = 8080
@@ -36,6 +38,9 @@ app.use(session({
     saveUninitialized: false,
     store: MongoStore.create({mongoUrl:"mongodb+srv://alexiafalcone1995:carmina2024@cluster0.wdy9r2h.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0"})
 }))
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/api/products', routerProd)
 app.use('/api/carts', routerCart)
