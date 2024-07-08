@@ -62,6 +62,10 @@ routerViews.get('/realtimeproducts', async (req, res) => {
    res.render('realTimeProducts')
 });
 
+routerViews.get('/current', async (req, res)=>{
+   res.render('current', {user: req.session.user});
+})
+
 routerViews.get('/chat', async (req, res) => {
    res.render('chat')
 });

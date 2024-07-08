@@ -2,7 +2,10 @@ import passport from 'passport';
 import local from 'passport-local';
 import githubStrategy from 'passport-github2';
 import userModel from '../dao/models/users.model.js';
-import { createHash, isValidPassword } from '../utils.js'
+import { createHash, isValidPassword } from '../utils.js';
+import cartManagerDb from '../dao/manager/db/cartManagerDb.js'
+
+const cartManager = new cartManagerDb()
 
 const localStrategy = local.Strategy
 
@@ -17,12 +20,15 @@ const initializePassport = () => {
                     console.log("El usuario ya existe")
                     return done(null, false)
                 }
+                const newCart = await cartManager.createCart()
+                
                 const newUser = {
                     first_name,
                     last_name,
                     email,
                     age,
-                    password: createHash(password)
+                    password: createHash(password),
+                    cart: newCart._id
                 }
                 if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
 
@@ -82,6 +88,20 @@ const initializePassport = () => {
     passport.use('login', new localStrategy({ usernameField: 'email' }, async (username, password, done) => {
         try {
             const user = await userModel.findOne({ email: username })
+            if (!user) {
+                console.log('El usuario no existe')
+                return done(null, user)
+            }
+            if (!isValidPassword(user, password)) return done(null, false)
+            return done(null, user)
+        } catch (error) {
+            return done(error)
+        }
+    }))
+
+    passport.use('current', new localStrategy({usernameField: 'email'}, async (username,password, done)=>{
+        try {
+            const user = await userModel.findOne({email: username})
             if (!user) {
                 console.log('El usuario no existe')
                 return done(null, user)

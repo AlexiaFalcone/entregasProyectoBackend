@@ -43,7 +43,7 @@ routerSession.get("/github", passport.authenticate("github",{scope:["user:email"
 
 routerSession.get("/githubcallback",passport.authenticate("github",{failureRedirect:"/login"}),async(req,res)=>{
     req.session.user=req.user
-    res.redirect('/products')
+    res.redirect('/products');
 })
 
 routerSession.post('/logout', async (req, res) => {
@@ -56,6 +56,18 @@ routerSession.post('/logout', async (req, res) => {
     } catch (error) {
         res.status(500).json({ msg: 'No se pudo cerrar sesión.' });
     }
+})
+
+routerSession.get('/current', passport.authenticate('current', {failureRedirect: 'failcurrent'}), async (req, res)=>{
+    try {
+        req.session.user=req.user
+        res.redirect('/current');
+    } catch (error) {
+        res.status(500).json({ msg: 'Error al cargar los datos del usuario.' });
+    }
+})
+routerSession.get('failcurrent', async(req, res)=>{
+    res.send({error: 'No se pudo encontrar el usuario'})
 })
 
 export default routerSession
