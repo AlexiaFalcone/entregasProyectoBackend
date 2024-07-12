@@ -60,9 +60,9 @@ class productManagerDb {
         }
     };
 
-    async getProductById(id) {
+    async getProductById(prodId){
         try {
-            const singleProduct = await productModel.findOne(id)
+            const singleProduct = await productModel.findById(prodId).lean()
             return singleProduct
         } catch (error) {
             throw error
