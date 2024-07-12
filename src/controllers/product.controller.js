@@ -50,3 +50,24 @@ export const addProductController = async (req, res) =>{
         res.status(500).json({ msg: 'No se pudo agregar el producto.' })
     }
 }
+
+export const upDateProductController = async (req, res) =>{
+    try {
+        const prodId = req.params.pid
+        const product = req.body
+        const prodUpdate = await manager.upDateProduct(product, prodId)
+        res.send(prodUpdate)
+    } catch (error) {
+        res.status(500).json({ msg: 'No se pudo actualizar el producto.' })
+    }
+}
+
+export const deleteProductController = async (req, res)=>{
+    try {
+        const prodId = req.params.pid
+        const prodDelete = await manager.deleteProduct(prodId)
+        res.send(prodDelete)
+    } catch (error) {
+        res.status(500).json({ msg: 'No se pudo eliminar el producto.' })
+    }
+}

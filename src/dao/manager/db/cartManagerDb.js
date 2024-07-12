@@ -82,17 +82,6 @@ class CartManegerDb {
         }
     }
 
-    async upDateCart(cart, newCart) {
-        try {
-            cart[0].products = [];
-            cart[0].products.push(newCart)
-
-            const result = await cartModel.updateOne({ _id: cart[0]._id }, { $set: cart[0] })
-            return result
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     async deleteOne(cid, pid) {
         const cart = await cartModel.find({ _id: cid }).lean().populate('products.product');

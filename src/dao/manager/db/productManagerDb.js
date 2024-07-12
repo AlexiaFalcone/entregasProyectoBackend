@@ -69,10 +69,10 @@ class productManagerDb {
         }
     }
 
-    async upDateProduct(productId, update) {
+    async upDateProduct(product, prodId) {
         try {
-            const { title, description, price, code, stock, category } = update
-            const prodFind = await productModel.findById({ _id: productId })
+            const { title, description, price, code, stock, category } = product
+            const prodFind = await productModel.findById({ _id: prodId })
 
             if (title) {
                 prodFind.title = title
@@ -88,7 +88,7 @@ class productManagerDb {
                 prodFind.category = category
             }
 
-            const updateItem = await productModel.updateOne({ _id: productId }, prodFind)
+            const updateItem = await productModel.updateOne({ _id: prodId }, prodFind)
             return updateItem
 
         } catch (error) {
@@ -96,9 +96,9 @@ class productManagerDb {
         }
     }
 
-    async deleteProduct(productId) {
+    async deleteProduct(prodId) {
         try {
-            const deleteOne = await productModel.deleteOne({ _id: productId })
+            const deleteOne = await productModel.deleteOne({ _id: prodId })
             return deleteOne
 
         } catch (error) {
