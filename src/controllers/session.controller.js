@@ -1,22 +1,12 @@
-import { Router } from "express";
-import userModel from '../dao/models/users.model.js'
-import { isValidPassword } from "../utils.js";
-import passport from "passport";
-
-
-const routerSession = Router()
-
-routerSession.post('/register', passport.authenticate('register', { failureRedirect: 'failregister' }), async (req, res) => {
+export const registerSessionController = async (req, res)=>{
     res.send({ status: 'success', message: 'Usuario registrado' })
-})
-
-routerSession.get('failregister', async (req, res) => {
+};
+export const failRegisterSessionController = async (req, res)=>{
     console.log('error al registrar el usuario');
     res.send({ error: 'No se pudo registrar el usuario' })
-})
+};
 
-routerSession.post('/login', passport.authenticate('login', { failureRedirect: 'faillogin' }), async (req, res) => {
-    
+export const loginSessionController = async (req, res)=>{
     if (!req.user) return res.status(400).send({ status: "error", error: "Campos incompletos" })
 
     try {
@@ -32,21 +22,20 @@ routerSession.post('/login', passport.authenticate('login', { failureRedirect: '
     } catch (error) {
         res.status(500).json({ msg: 'Error al iniciar sesión.' });
     }
-})
+};
 
-routerSession.get('faillogin', async(req, res)=>{
+export const failLoginSessionController = async (req, res)=>{
     res.send({error: 'No se pudo encontrar el usuario'})
-})
+};
 
-routerSession.get("/github", passport.authenticate("github",{scope:["user:email"]}),async(req,res)=>{})
+export const githubSessionController = async (req, res)=>{};
 
-
-routerSession.get("/githubcallback",passport.authenticate("github",{failureRedirect:"/login"}),async(req,res)=>{
+export const githubCallbackSessionController = async (req, res)=>{
     req.session.user=req.user
     res.redirect('/products');
-})
+};
 
-routerSession.post('/logout', async (req, res) => {
+export const logoutSessionController = async (req, res)=>{
     try {
         console.log("Sesión cerrada")
         req.session.destroy((error) => {
@@ -56,18 +45,17 @@ routerSession.post('/logout', async (req, res) => {
     } catch (error) {
         res.status(500).json({ msg: 'No se pudo cerrar sesión.' });
     }
-})
+};
 
-routerSession.get('/current', passport.authenticate('current', {failureRedirect: 'failcurrent'}), async (req, res)=>{
+export const currentSessionController = async (req, res)=>{
     try {
         req.session.user=req.user
         res.redirect('/current');
     } catch (error) {
         res.status(500).json({ msg: 'Error al cargar los datos del usuario.' });
     }
-})
-routerSession.get('failcurrent', async(req, res)=>{
-    res.send({error: 'No se pudo encontrar el usuario'})
-})
+};
 
-export default routerSession
+export const failCurrentSessionController = async (req, res)=>{
+    res.send({error: 'No se pudo encontrar el usuario'})
+};

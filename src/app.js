@@ -1,25 +1,26 @@
-import express from 'express'
-import cookieParser from 'cookie-parser'
-import session from 'express-session'
-import handlebars from 'express-handlebars'
-import { Server } from 'socket.io'
-import {__dirname} from './utils.js'
-import routerViews from './routes/views.routes.js'
-import routerProd from './routes/products.routes.js'
-import routerCart from './routes/carts.routes.js'
-import ChatManager from './dao/manager/db/chatManager.js'
-import mongoose from 'mongoose'
-import MongoStore from 'connect-mongo'
-import routerSession from './routes/session.js'
-import passport from 'passport'
-import initializePassport from './config/passport.config.js'
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import handlebars from 'express-handlebars';
+import { Server } from 'socket.io';
+import {__dirname} from './utils.js';
+import routerViews from './routes/views.routes.js';
+import routerProd from './routes/products.routes.js';
+import routerCart from './routes/carts.routes.js';
+import ChatManager from './dao/manager/db/chatManager.js';
+import mongoose from 'mongoose';
+import MongoStore from 'connect-mongo';
+import routerSession from './routes/session.routes.js';
+import passport from 'passport';
+import initializePassport from './config/passport.config.js';
+import { portConection, mongoConection } from './config/database.js';
 
 const app = express()
-const PORT = 8080
+const PORT = portConection;
 const httpServer = app.listen(PORT, console.log(`Server running on port ${PORT}`))
 const socketServer = new Server(httpServer)
 
-mongoose.connect("mongodb+srv://alexiafalcone1995:carmina2024@cluster0.wdy9r2h.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect(mongoConection)
     .then(() => { console.log("Conectado a la base de datos") })
     .catch(error => console.error("Error al conectar a la base de datos", error))
 
@@ -36,7 +37,7 @@ app.use(session({
     secret: 'secretkey',
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({mongoUrl:"mongodb+srv://alexiafalcone1995:carmina2024@cluster0.wdy9r2h.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0"})
+    store: MongoStore.create({mongoUrl:mongoConection})
 }))
 initializePassport()
 app.use(passport.initialize())
