@@ -1,11 +1,18 @@
 // función para agregar un producto al carrito
-
+let currentCartId = null;
 const btnAddToCart = document.querySelectorAll("#btnAddProd");
 
 btnAddToCart.forEach((button) => {
     button.addEventListener("click", async (event) => {
         event.preventDefault();
 
+        if (!currentCartId) {
+            const cartResponse = await fetch("/api/carts/:cid", { method: "GET" });
+            const cartData = await cartResponse.json();            
+            currentCartId = cartData.respuesta._id        
+               
+        }
+        
         const productId = event.target.previousSibling.previousSibling.textContent.substring(3)
        
         const upDateResponse = await fetch(`/api/carts/${currentCartId}/product/${productId}`, { method: "POST" });
