@@ -15,8 +15,7 @@ export const loginSessionController = async (req, res)=>{
             last_name: req.user.last_name,
             email: req.user.email,
             age: req.user.age
-        };
-        console.log(req.session.user)
+        };   
         res.redirect('/products');
 
     } catch (error) {
