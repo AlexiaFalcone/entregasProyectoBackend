@@ -14,7 +14,8 @@ export const loginSessionController = async (req, res)=>{
             first_name: req.user.first_name,
             last_name: req.user.last_name,
             email: req.user.email,
-            age: req.user.age
+            age: req.user.age,
+            cartId: req.user.cart[0]._id
         };   
         res.redirect('/products');
 

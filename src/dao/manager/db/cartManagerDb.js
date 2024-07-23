@@ -14,6 +14,7 @@ class CartManegerDb {
         }
     }
 
+
     async getCart(cid) {
         try {
             if (cid) {
@@ -29,6 +30,8 @@ class CartManegerDb {
     }
 
     async addProduct(cid, pid) {
+        console.log(cid, "id cart");
+        console.log(pid, "id prod");
         try {
             const cart = await cartModel.find({ _id: cid }).populate('products.product');
             const addProdToCart = cart[0].products.findIndex(product => product.product.id == pid);
