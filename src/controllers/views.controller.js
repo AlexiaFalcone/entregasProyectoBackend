@@ -67,6 +67,10 @@ export const chatViewController = async (req, res)=>{
     res.render('chat')
 };
 
+export const createProductViewController = async (req, res)=>{
+    res.render('createProduct')
+};
+
 
 
 

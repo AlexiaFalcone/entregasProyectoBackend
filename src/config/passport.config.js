@@ -28,7 +28,7 @@ const initializePassport = () => {
                     email,
                     age,
                     password: createHash(password),
-                    cart: newCart._id
+                    cart: newCart
                 }
                 if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
 

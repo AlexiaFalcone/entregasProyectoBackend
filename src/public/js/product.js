@@ -2,7 +2,6 @@
 
 const btnAddToCart = document.querySelectorAll("#btnAddProd");
 let currentCartId = document.getElementById("currentCartId").value;
-//console.log(currentCartId);
 
 btnAddToCart.forEach((button) => {
     button.addEventListener("click", async (event) => {

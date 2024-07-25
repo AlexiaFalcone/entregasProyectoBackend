@@ -1,5 +1,6 @@
 import cartModel from "../../models/carts.model.js";
 
+
 class CartManegerDb {
     constructor() {
 
@@ -30,10 +31,12 @@ class CartManegerDb {
     }
 
     async addProduct(cid, pid) {
-        console.log(cid, "id cart");
-        console.log(pid, "id prod");
+        // console.log(cid, "id cart");  
+        // console.log(pid, "id prod");
+      
         try {
             const cart = await cartModel.find({ _id: cid }).populate('products.product');
+            console.log(cart);
             const addProdToCart = cart[0].products.findIndex(product => product.product.id == pid);
 
             if (addProdToCart == -1) {

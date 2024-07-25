@@ -20,12 +20,15 @@
     <input type="submit" value="enviar">
 </form>
 <form action="/api/sessions/logout" method="POST">
-<button type="submit">Cerrar sesión</button>
+    <button type="submit">Cerrar sesión</button>
 </form>
 <p>Bienvenido {{userData.first_name}} {{userData.last_name}}</p>
-<input id="currentCartId" value={{userData.cartId}}>
+<input type="hidden" id="currentCartId" value={{userData.cart}}>
 <div>
     <h1>PRODUCTOS DISPONIBLES</h1>
+    <form action="/api/createProduct" method="GET">
+    <button type="submit">Crear Producto</button>
+    </form>
     <div>
         {{#each docs }}
         <p>Producto: {{this.title}}</p>
