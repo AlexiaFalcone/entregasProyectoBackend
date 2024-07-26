@@ -7,7 +7,7 @@ const managerCart = new CartManegerDb()
 export const getProductViewController = async (req, res)=>{
     try {
         const userData = req.session.user
-        //console.log(userData);
+        //console.log(req.session.user.role);
         let { limit = 10, page = 1, sort, category } = req.query;
         limit = parseInt(limit);
         page = parseInt(page);
@@ -26,7 +26,8 @@ export const getProductViewController = async (req, res)=>{
            hasNextPage,
            prevLink,
            nextLink,
-           userData
+           userData, 
+           isAdmin: userData.role === 'admin',
         })
      } catch (error) {
         res.status(500).json({ msg: 'No se encontraron productos' })
@@ -67,9 +68,7 @@ export const chatViewController = async (req, res)=>{
     res.render('chat')
 };
 
-export const createProductViewController = async (req, res)=>{
-    res.render('createProduct')
-};
+
 
 
 

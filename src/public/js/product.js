@@ -8,8 +8,7 @@ btnAddToCart.forEach((button) => {
         event.preventDefault();
 
         const productId = event.target.previousSibling.previousSibling.textContent.substring(3)
-  
-       
+      
         const upDateResponse = await fetch(`/api/carts/${currentCartId}/product/${productId}`, { method: "POST" });
 
         if(upDateResponse){

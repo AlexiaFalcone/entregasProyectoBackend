@@ -26,17 +26,15 @@
 <input type="hidden" id="currentCartId" value={{userData.cart}}>
 <div>
     <h1>PRODUCTOS DISPONIBLES</h1>
-    <form action="/api/createProduct" method="GET">
-    <button type="submit">Crear Producto</button>
-    </form>
     <div>
         {{#each docs }}
         <p>Producto: {{this.title}}</p>
         <p>Precio: ${{this.price}}</p>
         <p class="productId">ID:{{this._id}}</p>
         <input id="btnAddProd" type="submit" value="Agregar">
-        <input id="btnUpDateProd" type="submit" value="Editar">
+        {{#if isAdmin}}
         <input id="btnDeleteProd" type="submit" value="Eliminar">
+        {{/if}}
         {{/each}}
     </div>
 </div>

@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { createCartController, getCartController, addProductController, upDateQuantityController, deleteOneController, deleteProductsInCartController } from '../controllers/cart.controller.js'
+import { isNotAdmin } from '../middleware/auth.js';
 
 const routerCart = Router()
 
@@ -9,7 +10,7 @@ routerCart.post('/', createCartController);
 
 routerCart.get('/:cid', getCartController);
 
-routerCart.post('/:cid/product/:pid', addProductController);
+routerCart.post('/:cid/product/:pid', isNotAdmin, addProductController);
 
 routerCart.put('/:cid/products/:pid', upDateQuantityController);
 
