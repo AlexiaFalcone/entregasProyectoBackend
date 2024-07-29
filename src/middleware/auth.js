@@ -15,18 +15,19 @@ export const isNotAuth = (req, res, next) => {
 };
 
 export const isAdmin = (req, res, next) =>{
-    if (req.session.user.role == 'admin'){
+    //console.log(req.session.user.role, "role");
+     if (req.session.user.role == "admin"){
         return next()
-    } else {
-        res.send({error: 'No eres administrador'})
-    }
-}
+     } else {
+     res.send({error: 'No eres administrador'})
+     }
+};
 
 export const isNotAdmin = (req, res, next) =>{
    
-    if (req.session.user.role == 'usuario'){
+    if (req.session.user.role == "usuario"){
         return next()
     } else {
         res.send({error: 'Ruta exclusiva para usuarios'})
     }
-}
+};

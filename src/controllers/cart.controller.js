@@ -84,4 +84,14 @@ export const deleteProductsInCartController = async (req, res)=>{
     } catch (error) {
         res.status(500).json({ msg: 'No se pudo eliminar los productos del carrito' })
     }
-}
+};
+
+export const purchaseCartController = async (req, res) => {
+    try {
+        const cartId = req.params.cid;
+        const newTicket = await manager.purchaseCart(cartId);
+        res.send(newTicket);
+    } catch (error) {
+        res.status(500).json({ msg: 'No se pudo crear el ticket' }) 
+    }
+};

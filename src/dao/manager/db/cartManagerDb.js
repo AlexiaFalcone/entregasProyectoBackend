@@ -1,4 +1,6 @@
 import cartModel from "../../models/carts.model.js";
+import productModel from "../../models/products.model.js";
+import ticketModel from "../../models/tickets.js";
 
 
 class CartManegerDb {
@@ -13,7 +15,7 @@ class CartManegerDb {
         } catch (error) {
             console.log(error)
         }
-    }
+    };
 
 
     async getCart(cid) {
@@ -28,11 +30,9 @@ class CartManegerDb {
         } catch (error) {
             console.log(error)
         }
-    }
+    };
 
     async addProduct(cid, pid) {
-        // console.log(cid, "id cart");  
-        // console.log(pid, "id prod");
       
         try {
             const cart = await cartModel.find({ _id: cid }).populate('products.product');
@@ -56,7 +56,7 @@ class CartManegerDb {
         catch (error) {
             console.log(error)
         }
-    }
+    };
 
     async updateQuantity(cid, pid, newQuantity) {
 
@@ -86,7 +86,7 @@ class CartManegerDb {
         } catch (error) {
             console.log(error)
         }
-    }
+    };
 
 
     async deleteOne(cid, pid) {
@@ -100,7 +100,7 @@ class CartManegerDb {
         }
         const result = await cartModel.updateOne({ _id: cart[0]._id }, { $set: cart[0] })
         return result
-    }
+    };
 
     async deleteProductsInCart(cid) {
         try {
@@ -110,6 +110,61 @@ class CartManegerDb {
         } catch (error) {
             console.log(error)
         }
+    };
+
+    async purchaseCart(cartId){
+        try {
+            const cart = await cartModel.find({_id:cartId}).lean().populate('products.product');
+            if(cart[0]){
+                if(!cart[0].products.length){
+                    return res.send("Es necesario que agregues productos.")
+                }
+                const ticketProducts = [];
+                const rejectedProducts = [];
+                let total = 0;
+    
+                for (let i = 0; i < cart[0].products.length; i++) {
+                    const cartProduct = cart[0].products[i];
+                    const productDB = await productModel.findById(cartProduct.product._id);
+                    
+                    if(cartProduct.quantity <= productDB.stock){
+                        ticketProducts.push({
+                          productID: cartProduct.product._id,
+                          price: cartProduct.product.price,
+                          quantity: cartProduct.quantity
+                        })
+                        total += cartProduct.quantity*productDB.price;
+                        
+                        productDB.stock = productDB.stock - cartProduct.quantity;
+                        await productModel.updateOne({_id: productDB._id}, productDB);
+    
+                    }else{
+                        rejectedProducts.push({
+                            productID: cartProduct.product._id,
+                            quantity: cartProduct.quantity
+                        })
+                    }
+                }
+                let orderCode = Math.floor(Math.random() * 10000 + 1)
+                const newTicket = {
+                    code: orderCode,
+                    purchase_datetime: new Date().toLocaleDateString(),
+                    amount: total,
+                    purchaser: req.session.user.email,
+                    products: ticketProducts
+                }
+                
+                const ticketCreated = await ticketModel.create(newTicket);
+                console.log(ticketCreated)
+                res.send({status: 'success', message: 'La compra se efectuó correctamente', payload: ticketCreated})
+    
+            }else{
+                res.send({status: 'error', message: 'El carrito no existe'})
+            }
+    
+        } catch (error) {
+            res.send(error.message)
+        };
     }
 }
 

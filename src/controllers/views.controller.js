@@ -27,7 +27,7 @@ export const getProductViewController = async (req, res)=>{
            prevLink,
            nextLink,
            userData, 
-           isAdmin: userData.role === 'admin',
+           isAdmin: userData.role == 'admin',
         })
      } catch (error) {
         res.status(500).json({ msg: 'No se encontraron productos' })

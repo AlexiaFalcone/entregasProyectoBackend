@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createCartController, getCartController, addProductController, upDateQuantityController, deleteOneController, deleteProductsInCartController } from '../controllers/cart.controller.js'
+import { createCartController, getCartController, addProductController, upDateQuantityController, deleteOneController, deleteProductsInCartController, purchaseCartController } from '../controllers/cart.controller.js'
 import { isNotAdmin } from '../middleware/auth.js';
 
 const routerCart = Router()
@@ -17,5 +17,7 @@ routerCart.put('/:cid/products/:pid', upDateQuantityController);
 routerCart.delete('/:cid/product/:pid', deleteOneController);
 
 routerCart.delete('/carts/:cid', deleteProductsInCartController);
+
+routerCart.post('/:cid/purchase', purchaseCartController);
 
 export default routerCart 
