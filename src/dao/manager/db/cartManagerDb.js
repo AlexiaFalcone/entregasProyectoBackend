@@ -2,6 +2,8 @@ import cartModel from "../../models/carts.model.js";
 import productModel from "../../models/products.model.js";
 import ticketModel from "../../models/tickets.js";
 import userModel from "../../models/users.model.js";
+import nodemailer from 'nodemailer';
+import {passwordConection, emailConection} from '../../../config/database.js'
 
 
 class CartManegerDb {
@@ -168,14 +170,27 @@ class CartManegerDb {
         };
     };
 
-    async sendTicket(ticketId){
+    async getTicket(ticketId){
+        const ticket = await ticketModel.findOne({_id: ticketId}).lean();
+        return ticket
+    }
+
+    async sendTicket(){
         try {
-            console.log(ticketId);
+            const transport = nodemailer.createTransport({
+                service: "gmail",
+                port: 587,
+                auth:{
+                    user: emailConection,
+                    pass: passwordConection
+                }
+            })
+            return transport
             
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     async purchaseCartView(ticketId, cartId, email){
         try {

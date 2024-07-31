@@ -99,7 +99,18 @@ export const purchaseCartController = async (req, res) => {
 export const sendTicketController = async (req, res)=>{
     try {
         const ticketId = req.params.ticketId
-        const sendEmail = await manager.sendTicket(ticketId)
+        const userTicket = await manager.getTicket(ticketId)
+        
+        const sendEmail = await manager.sendTicket()
+        let result = sendEmail.sendMail({
+            from:'alexiafalcone1995@gmail.com',
+            to:'alexiafalcone1995@gmail.com',
+            subject: 'Ticket de compra',
+            html:`<div>
+            <h1>Ticket de compra</h1>
+            <p>${userTicket}</p>
+            </div>`
+        })
         res.send(sendEmail);
         
     } catch (error) {
