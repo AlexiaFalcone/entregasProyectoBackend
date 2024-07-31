@@ -1,6 +1,7 @@
 import cartModel from "../../models/carts.model.js";
 import productModel from "../../models/products.model.js";
 import ticketModel from "../../models/tickets.js";
+import userModel from "../../models/users.model.js";
 
 
 class CartManegerDb {
@@ -155,7 +156,7 @@ class CartManegerDb {
                 }
                 
                 const ticketCreated = await ticketModel.create(newTicket);
-                console.log(ticketCreated)
+                
                 res.send({status: 'success', message: 'La compra se efectuó correctamente', payload: ticketCreated})
     
             }else{
@@ -163,8 +164,32 @@ class CartManegerDb {
             }
     
         } catch (error) {
-            res.send(error.message)
+            console.log(error);
         };
+    };
+
+    async purchaseCartView(ticketId, cartId, email){
+        try {
+            const user = await userModel.findOne({email: email}).lean();   
+            const ticket = await ticketModel.findOne({_id: ticketId}).lean();
+            let cart = await cartModel.findOne({_id: cartId}).lean().populate('products.product');
+            const cart2 = {...cart};
+            cart2.products = [];
+            
+        
+            for (let i = 0; i < cart.products.length; i++) {
+                const product = cart.products[i];
+        
+                product.total_price = product.quantity * product.product.price
+        
+            };
+        
+            const clearCart = await cartModel.updateOne({_id: cartId}, {$set: cart2});
+            return(clearCart, user, ticket)
+
+        } catch (error) {
+         console.log(error);   
+        }
     }
 }
 

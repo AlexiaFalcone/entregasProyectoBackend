@@ -1,6 +1,7 @@
 import productManagerDb from "../dao/manager/db/productManagerDb.js";
 import CartManegerDb from "../dao/manager/db/cartManagerDb.js";
 
+
 const manager = new productManagerDb()
 const managerCart = new CartManegerDb()
 
@@ -68,7 +69,16 @@ export const chatViewController = async (req, res)=>{
     res.render('chat')
 };
 
+export const purchaseOrderControllerView = async ( req, res )=>{
+    const ticketId = req.params.tid;
+    const cartId = req.session.user.cart;
+    const email = req.session.user.email;
 
+    const purchaseTicket = await managerCart.purchaseCartView(ticketId, cartId, email)
+    //const {user, ticket} = purchaseTicket
+    console.log(purchaseTicket, " purchese");
+    res.render('purchase', purchaseTicket)
+}
 
 
 
