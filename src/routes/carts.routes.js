@@ -20,6 +20,6 @@ routerCart.delete('/carts/:cid', deleteProductsInCartController);
 
 routerCart.post('/:cid/purchase', purchaseCartController);
 
-routerCart.get('/email', sendTicketController);
+routerCart.get('/email/:tid', sendTicketController);
 
 export default routerCart 

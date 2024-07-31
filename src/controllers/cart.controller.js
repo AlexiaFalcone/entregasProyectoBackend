@@ -98,8 +98,10 @@ export const purchaseCartController = async (req, res) => {
 
 export const sendTicketController = async (req, res)=>{
     try {
-        const ticketId = req.params.ticketId
+        const ticketId = req.params.tid
+        //console.log(ticketId, "ID TICKET");
         const userTicket = await manager.getTicket(ticketId)
+        //console.log(userTicket);
         
         const sendEmail = await manager.sendTicket()
         let result = sendEmail.sendMail({
