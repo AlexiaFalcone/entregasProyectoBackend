@@ -168,6 +168,15 @@ class CartManegerDb {
         };
     };
 
+    async sendTicket(ticketId){
+        try {
+            console.log(ticketId);
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     async purchaseCartView(ticketId, cartId, email){
         try {
             const user = await userModel.findOne({email: email}).lean();   

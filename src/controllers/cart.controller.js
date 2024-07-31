@@ -95,3 +95,14 @@ export const purchaseCartController = async (req, res) => {
         res.status(500).json({ msg: 'No se pudo crear el ticket' }) 
     }
 };
+
+export const sendTicketController = async (req, res)=>{
+    try {
+        const ticketId = req.params.ticketId
+        const sendEmail = await manager.sendTicket(ticketId)
+        res.send(sendEmail);
+        
+    } catch (error) {
+        res.status(500).json({ msg: 'No se pudo enviar el ticket' }) 
+    }
+}

@@ -1,14 +1,20 @@
 <h1>TICKET</h1>
 
 <p>Tus productos seleccionados son:</p>
-{{purchaseTicket.amount}}
 <div>
-    {{#each purchaseTicket}}
-    {{!-- <p>Item: {{this.products.productID}}</p>
-    <p>Precio: ${{this.products.price}}</p>
-    <p>Cantidad: {{this.products.quantity}}</p> --}}
+    {{#each purchaseTicket.products}}
+   <p>Item: {{this.productID}}</p>
+    <p>Precio: ${{this.price}}</p>
+    <p>Cantidad: {{this.quantity}}</p> 
     {{/each}}
+    
+    <p>Precio total: ${{purchaseTicket.amount}}</p>
+    <p>Ticket ID: {{purchaseTicket._id}}</p>
+    <form action="/api/carts/email" method="GET">
+    <button type="submit">Finalizar Compra</button>
+</form>
 </div>
+
 
 
 

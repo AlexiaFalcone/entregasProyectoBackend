@@ -75,9 +75,7 @@ export const purchaseOrderControllerView = async ( req, res )=>{
     const email = req.session.user.email;
 
     const purchaseTicket = await managerCart.purchaseCartView(ticketId, cartId, email)
-    //const {user, ticket} = purchaseTicket
-    console.log(purchaseTicket, " purchese");
-    res.render('purchase', purchaseTicket)
+    res.render('purchase', {purchaseTicket})
 }
 
 
