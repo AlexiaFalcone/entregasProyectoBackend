@@ -13,7 +13,7 @@ import MongoStore from 'connect-mongo';
 import routerSession from './routes/session.routes.js';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
-import { portConection, mongoConection } from './config/database.js';
+import { portConection, mongoConection, secretConection } from './config/database.js';
 
 const app = express()
 const PORT = portConection;
@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname + '/public'))
 app.use(cookieParser())
 app.use(session({
-    secret: 'secretkey',
+    secret: secretConection,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({mongoUrl:mongoConection})

@@ -2,38 +2,38 @@ import CartManegerDb from "../dao/manager/db/cartManagerDb.js";
 
 const manager = new CartManegerDb()
 
-export const createCartController = async (req, res)=>{
+export const createCartController = async (req, res) => {
     try {
         const newCart = await manager.createCart()
         res.send(newCart)
     } catch (error) {
-        res.status(500).json({msg: 'No se pudo crear el carrito'})
+        res.status(500).json({ msg: 'No se pudo crear el carrito' })
     }
 };
 
-export const getCartController = async (req, res)=>{
+export const getCartController = async (req, res) => {
     try {
         const cid = req.params.cid
         const sigleCart = await manager.getCart(cid)
         res.send(sigleCart)
     } catch (error) {
-        res.status(404).json({msg: 'No se encontro el carrito'})
+        res.status(404).json({ msg: 'No se encontro el carrito' })
     }
 };
 
-export const addProductController = async (req, res)=>{
+export const addProductController = async (req, res) => {
     try {
-        const cid = req.params.cid         
+        const cid = req.params.cid
         const pid = req.params.pid
         const addProd = await manager.addProduct(cid, pid)
         res.send(addProd)
-       
+
     } catch (error) {
-        res.status(500).json({msg: 'El producto no se pudo agregar'})
+        res.status(500).json({ msg: 'El producto no se pudo agregar' })
     }
 };
 
-export const upDateCartController = async (req, res)=>{
+export const upDateCartController = async (req, res) => {
     try {
         const cid = req.params.cid
         const newCart = req.body
@@ -41,13 +41,13 @@ export const upDateCartController = async (req, res)=>{
 
         const upDateOneCart = await manager.upDateCart(cart, newCart)
         return upDateOneCart
-        
+
     } catch (error) {
-        res.status(500).json({msg: 'No se pudo actualizar el carrito'}) 
+        res.status(500).json({ msg: 'No se pudo actualizar el carrito' })
     }
 };
 
-export const upDateQuantityController = async (req, res)=>{
+export const upDateQuantityController = async (req, res) => {
     try {
         const cid = req.params.cid
         const pid = req.params.pid
@@ -61,7 +61,7 @@ export const upDateQuantityController = async (req, res)=>{
     }
 };
 
-export const deleteOneController = async (req, res)=>{
+export const deleteOneController = async (req, res) => {
     try {
         const cid = req.params.cid
         const pid = req.params.pid
@@ -74,7 +74,7 @@ export const deleteOneController = async (req, res)=>{
     }
 };
 
-export const deleteProductsInCartController = async (req, res)=>{
+export const deleteProductsInCartController = async (req, res) => {
     try {
         const cid = req.params.cid
         const clearOneCart = await manager.deleteProductsInCart(cid)
@@ -92,28 +92,43 @@ export const purchaseCartController = async (req, res) => {
         const newTicket = await manager.purchaseCart(cartId);
         res.send(newTicket);
     } catch (error) {
-        res.status(500).json({ msg: 'No se pudo crear el ticket' }) 
+        res.status(500).json({ msg: 'No se pudo crear el ticket' })
     }
 };
 
-export const sendTicketController = async (req, res)=>{
+export const sendTicketController = async (req, res) => {
     try {
-        const ticketId = req.params.tid
-        //console.log(ticketId, "ID TICKET");
-        const userTicket = await manager.getTicket(ticketId)
-        //console.log(userTicket);
-        
+        const ticketId = req.params.tid;
+        const userTicket = await manager.getTicket(ticketId);
+
         const sendEmail = await manager.sendTicket()
+
         let result = sendEmail.sendMail({
-            from:'alexiafalcone1995@gmail.com',
-            to:'alexiafalcone1995@gmail.com',
+            from: 'alexiafalcone1995@gmail.com',
+            to: `${userTicket.purchaser}`,
             subject: 'Ticket de compra',
-            html:`<div>
+            html: `<div>
             <h1>Ticket de compra</h1>
-            <p>${userTicket}</p>
-            </div>`
-        })
-        res.send(sendEmail);
+                <p><strong>Ticket ID:</strong> ${userTicket._id}</p>
+                <p><strong>Code:</strong> ${userTicket.code}</p>
+                <p><strong>Purchase Date:</strong> ${userTicket.purchase_datetime}</p>
+                <p><strong>Amount:</strong> $ ${userTicket.amount}</p>
+                <p><strong>Purchaser:</strong> ${userTicket.purchaser}</p>
+                <div>
+                  <h2>Products:</h2>
+                  <ul>
+                    ${userTicket.products.map(product => `
+                <li>
+                    <p><strong>Product ID:</strong> ${product.productID}</p>
+                    <p><strong>Price:</strong> $${product.price}</p>
+                    <p><strong>Quantity:</strong> ${product.quantity}</p>
+                </li>
+                    `).join('')}
+                  </ul>
+                </div>`
+        });
+
+        res.send(result);
         
     } catch (error) {
         res.status(500).json({ msg: 'No se pudo enviar el ticket' }) 

@@ -4,8 +4,7 @@ btnSendTicket.forEach((button) => {
         event.preventDefault();
 
         const ticketId = event.target.previousSibling.previousSibling.textContent.substring(11)
-        console.log(ticketId);
-      
+        
         const ticketResponse = await fetch(`/api/carts/email/${ticketId}`, { method: "GET" });
 
         if(ticketResponse){
