@@ -15,6 +15,7 @@ import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 import { portConection, mongoConection, secretConection } from './config/database.js';
 import routerMocking from './routes/mockingProducts.routes.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express()
 const PORT = portConection;
@@ -49,6 +50,7 @@ app.use('/api/carts', routerCart);
 app.use('/api/sessions', routerSession);
 app.use('/', routerViews);
 app.use('/api/mockingproducts', routerMocking);
+app.use(errorHandler);
 
 const manager = new ChatManager()
 
