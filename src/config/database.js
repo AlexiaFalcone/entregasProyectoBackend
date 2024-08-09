@@ -12,6 +12,7 @@ export const passwordConection = process.env.PASSWORD;
 
 export const secretConection = process.env.SECRET;
 
+
 export default {
     persistence: process.env.PERSISTENCE
 }
