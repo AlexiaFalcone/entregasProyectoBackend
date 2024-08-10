@@ -1,9 +1,10 @@
 export const registerSessionController = async (req, res)=>{
-    res.send({ status: 'success', message: 'Usuario registrado' })
+    req.logger.info('User registered');
+    res.send({ status: 'success', message: 'Usuario registrado' });
 };
 export const failRegisterSessionController = async (req, res)=>{
-    console.log('error al registrar el usuario');
-    res.send({ error: 'No se pudo registrar el usuario' })
+    req.logger.error('Register failed');
+    res.send({ error: 'No se pudo registrar el usuario' });
 };
 
 export const loginSessionController = async (req, res)=>{
@@ -26,6 +27,7 @@ export const loginSessionController = async (req, res)=>{
 };
 
 export const failLoginSessionController = async (req, res)=>{
+    req.logger.error('Login failed')
     res.send({error: 'No se pudo encontrar el usuario'})
 };
 
@@ -33,6 +35,7 @@ export const githubSessionController = async (req, res)=>{};
 
 export const githubCallbackSessionController = async (req, res)=>{
     req.session.user=req.user
+    req.logger.info('Login success');
     res.redirect('/products');
 };
 
@@ -44,6 +47,7 @@ export const logoutSessionController = async (req, res)=>{
             res.redirect('/login');
         });
     } catch (error) {
+        req.logger.error('Logout failed');
         res.status(500).json({ msg: 'No se pudo cerrar sesión.' });
     }
 };

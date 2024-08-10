@@ -8,7 +8,6 @@ const managerCart = new CartManegerDb()
 export const getProductViewController = async (req, res)=>{
     try {
         const userData = req.session.user
-        //console.log(req.session.user.role);
         let { limit = 10, page = 1, sort, category } = req.query;
         limit = parseInt(limit);
         page = parseInt(page);

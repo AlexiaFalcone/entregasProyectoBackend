@@ -4,6 +4,6 @@ export const logsController = async (req, res)=>{
     req.logger.error('Nivel error');
     req.logger.warning('Nivel warning');
     req.logger.info('Nivel info');
-    req.logger.debug('Nivel debug')
+    req.logger.debug('Nivel debug');
     res.send('Prueba de niveles de errores')
 }

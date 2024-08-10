@@ -1,8 +1,6 @@
 import winston from 'winston';
 import { __dirname } from '../utils.js';
 import dotenv from 'dotenv';
-import path from 'path';
-
 
 dotenv.config();
 
@@ -41,13 +39,13 @@ const prodLogger = winston.createLogger({
     transports: [
         new winston.transports.Console({level: 'info'}),
         new winston.transports.File({
-            filename: path.join(__dirname,'../logs/errores.log'), 
-            level: 'warning',
+            filename: './logs/errores.log', 
+            level: 'error',
             format: winston.format.simple()
         })
     ]
 });
-const currentEnv = process.env.ENV || "development";
+const currentEnv = process.env.NODE_ENV || "development";
 
 export const addLogger = (req,res,next)=>{
     if(currentEnv === "development"){

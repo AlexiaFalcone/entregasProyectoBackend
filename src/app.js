@@ -52,9 +52,9 @@ app.use('/api/carts', routerCart);
 app.use('/api/sessions', routerSession);
 app.use('/', routerViews);
 app.use('/api/mockingproducts', routerMocking);
+app.use(addLogger);
 app.use('/api/logger', loggerRouter);
 app.use(errorHandler);
-app.use(addLogger);
 
 
 const manager = new ChatManager()
