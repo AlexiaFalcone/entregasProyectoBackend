@@ -75,6 +75,14 @@ export const purchaseOrderControllerView = async ( req, res )=>{
 
     const purchaseTicket = await managerCart.purchaseCartView(ticketId, cartId, email)
     res.render('purchase', {purchaseTicket})
+};
+
+export const restoreControllerView = async (req, res)=>{
+    res.render('restorePassword')
+};
+
+export const refreshPassControllerView = async (req, res)=>{
+    res.render('refreshPassword')
 }
 
 

@@ -1,3 +1,9 @@
+import CartManegerDb from "../dao/manager/db/cartManagerDb.js";
+import userManager from "../dao/manager/db/userManagerDb.js";
+
+const managerUser = new userManager()
+const manager = new CartManegerDb()
+
 export const registerSessionController = async (req, res)=>{
     req.logger.info('User registered');
     res.send({ status: 'success', message: 'Usuario registrado' });
@@ -64,3 +70,35 @@ export const currentSessionController = async (req, res)=>{
 export const failCurrentSessionController = async (req, res)=>{
     res.send({error: 'No se pudo encontrar el usuario'})
 };
+
+export const restorePassword = async(req, res)=>{
+    try {
+        const userMail = req.body.email
+        console.log(userMail)
+        const sendEmail = await manager.sendTicket()
+
+        let result = sendEmail.sendMail({
+            from: 'alexiafalcone1995@gmail.com',
+            to: `${userMail}`,
+            subject: 'Link para restabler contraseña',
+            html: `<div>
+            <p>Ingrese al siguiente link restabler contraseña:</p>
+            <a href="/newPassword">Nueva contraseña</a>
+            </div>
+            `
+        });
+        res.send(result)
+        res.redirect('/login')
+        
+    } catch (error) {
+     console.error(error)   
+    }
+}
+
+export const newPassController = async(req, res)=>{
+    const newData = req.body
+    const {email, newPassword} = newData
+    
+    const refreshPass = await managerUser.newUserPassword(email, newPassword)
+    res.send(refreshPass)
+}

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import { registerSessionController, failRegisterSessionController, loginSessionController, failLoginSessionController, githubSessionController, githubCallbackSessionController, logoutSessionController, currentSessionController, failCurrentSessionController } from "../controllers/session.controller.js";
+import { registerSessionController, failRegisterSessionController, loginSessionController, failLoginSessionController, githubSessionController, githubCallbackSessionController, logoutSessionController, currentSessionController, failCurrentSessionController, restorePassword, newPassController } from "../controllers/session.controller.js";
 
 
 const routerSession = Router()
@@ -23,5 +23,9 @@ routerSession.post('/logout',logoutSessionController);
 routerSession.get('/current', passport.authenticate('current', {failureRedirect: 'failcurrent'}), currentSessionController);
 
 routerSession.get('failcurrent', failCurrentSessionController);
+
+routerSession.post('/restore', restorePassword);
+
+routerSession.post('/newpass', newPassController);
 
 export default routerSession

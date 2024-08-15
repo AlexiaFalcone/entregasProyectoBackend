@@ -1,6 +1,6 @@
 import { Router } from "express";
-import {isAuth, isNotAdmin, isNotAuth} from '../middleware/auth.js';
-import { getProductViewController, getCartViewController, loginViewController,registerViewController, realTimeProductsViewController, currentViewController, chatViewController, purchaseOrderControllerView} from "../controllers/views.controller.js";
+import { isAuth, isNotAdmin, isNotAuth } from '../middleware/auth.js';
+import { getProductViewController, getCartViewController, loginViewController, registerViewController, realTimeProductsViewController, currentViewController, chatViewController, purchaseOrderControllerView, restoreControllerView, refreshPassControllerView } from "../controllers/views.controller.js";
 
 const routerViews = Router()
 
@@ -19,5 +19,9 @@ routerViews.get('/current', currentViewController);
 routerViews.get('/chat', isNotAdmin, chatViewController);
 
 routerViews.get('/purchase/:tid', purchaseOrderControllerView);
+
+routerViews.get('/restorePassword', restoreControllerView);
+
+routerViews.get('/refreshPassword', refreshPassControllerView);
 
 export default routerViews
