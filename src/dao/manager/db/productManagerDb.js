@@ -8,8 +8,9 @@ class productManagerDb {
 
     async addProduct(newProd) {
         try {
-            let { title, description, price, code, stock, category } = newProd
-            let createProd = await productModel.create({ title, description, price, code, stock, category })
+            
+            let { title, description, price, code, stock, category, owner } = newProd
+            let createProd = await productModel.create({ title, description, price, code, stock, category, owner })
             return createProd
 
         } catch (error) {

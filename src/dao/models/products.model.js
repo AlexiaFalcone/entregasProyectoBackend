@@ -9,7 +9,12 @@ const productSchema = new mongoose.Schema({
     price: {type: Number, required: true},
     code: {type: String, required: true},
     stock: {type: Number, required: true},
-    category: {type: String, required: true}
+    category: {type: String, required: true},
+    owner:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: "users", 
+        default: "premium"
+    }
 })
 
 productSchema.plugin(mongoosePaginate)

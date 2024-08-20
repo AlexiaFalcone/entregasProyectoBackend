@@ -57,6 +57,7 @@ export const addProductController = async (req, res) => {
                 code: EErrors.INVALID_TYTPES_ERROR,
             });
         }
+        //console.log(product)
         const newProd = await manager.addProduct(product)
         res.send(newProd)
     } catch (error) {

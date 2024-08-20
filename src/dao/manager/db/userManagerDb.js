@@ -14,15 +14,15 @@ class userManager {
             if (!user) {
                 return res.send('El usuario no existe.')
             }
-            if (isValidPassword(newPassword, user.password)) {
-                return res.send('No puedes usar la misma contraseña.')
+            if (isValidPassword(user, newPassword)) {
+                return console.log('No puedes usar la misma contraseña.')
             }
             const userData = {
                 ...user._doc,
                 password: createHash(newPassword)
             };
             const userUpdate = await userModel.findOneAndUpdate({ email: email }, userData);
-            res.send(userUpdate)
+            return userUpdate
         } catch (error) {
             throw error
         }

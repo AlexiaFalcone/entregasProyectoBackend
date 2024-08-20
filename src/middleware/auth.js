@@ -16,10 +16,10 @@ export const isNotAuth = (req, res, next) => {
 
 export const isAdmin = (req, res, next) =>{
     //console.log(req.session.user.role, "role");
-     if (req.session.user.role == "admin"){
+     if (req.session.user.role == "premium"){
         return next()
      } else {
-     res.send({error: 'No eres administrador'})
+     res.send({error: 'No eres premium'})
      }
 };
 
