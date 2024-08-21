@@ -14,8 +14,8 @@ export const isNotAuth = (req, res, next) => {
     }
 };
 
-export const isAdmin = (req, res, next) =>{
-    //console.log(req.session.user.role, "role");
+export const isPremium = (req, res, next) =>{
+    
      if (req.session.user.role == "premium"){
         return next()
      } else {
