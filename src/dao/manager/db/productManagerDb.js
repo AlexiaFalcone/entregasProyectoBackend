@@ -6,10 +6,11 @@ class productManagerDb {
 
     }
 
-    async addProduct(product) {
+    async addProduct(product, user) {
         try {
-            let { title, description, price, code, stock, category, owner } = product
-            let createProd = await productModel.create({ title, description, price, code, stock, category, owner })
+            
+            let { title, description, price, code, stock, category } = product
+            let createProd = await productModel.create({ title, description, price, code, stock, category, owner: user._id})
             return createProd
 
         } catch (error) {

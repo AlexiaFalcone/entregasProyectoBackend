@@ -48,7 +48,7 @@ export const getProdByIdController = async (req, res) => {
 export const addProductController = async (req, res) => {
     try {
         const product = req.body
-
+        const user = req.user
         if (!product.title || !product.description || !product.price || !product.stock || !product.category) {
             customError.createError({
                 name: "Product create error",
@@ -57,8 +57,8 @@ export const addProductController = async (req, res) => {
                 code: EErrors.INVALID_TYTPES_ERROR,
             });
         }
-        //console.log(product)
-        const newProd = await manager.addProduct(product)
+        
+        const newProd = await manager.addProduct(product, user)
         res.send(newProd)
     } catch (error) {
         res.status(500).json({ msg: 'No se pudo agregar el producto.' })

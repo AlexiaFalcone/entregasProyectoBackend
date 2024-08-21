@@ -81,7 +81,7 @@ export const restorePassword = async(req, res)=>{
             subject: 'Link para restabler contraseña',
             html: `<div>
             <p>Ingrese al siguiente link restabler contraseña:</p>
-            <a href="/refreshPassword">Nueva contraseña</a>
+            <a href="http://localhost:8080/refreshPassword">Nueva contraseña</a>
             </div>
             `
         });
@@ -90,11 +90,11 @@ export const restorePassword = async(req, res)=>{
     } catch (error) {
      console.error(error)   
     }
-}
+};
 
 export const newPassController = async(req, res)=>{
     const newData = req.body
     const {email, newPassword} = newData
     const refreshPass = await managerUser.newUserPassword(email, newPassword)
     res.send(refreshPass)
-}
+};

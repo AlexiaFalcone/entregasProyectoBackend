@@ -18,6 +18,7 @@ import routerMocking from './routes/mockingProducts.routes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { addLogger } from './utils/logger.js';
 import loggerRouter from './routes/logger.routes.js';
+import routerUser from './routes/users.routes.js';
 
 const app = express()
 const PORT = portConection;
@@ -55,6 +56,7 @@ app.use('/api/mockingproducts', routerMocking);
 app.use(addLogger);
 app.use('/api/logger', loggerRouter);
 app.use(errorHandler);
+app.use('/api/users', routerUser);
 
 
 const manager = new ChatManager()
