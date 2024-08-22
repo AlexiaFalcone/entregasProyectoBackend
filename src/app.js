@@ -2,6 +2,8 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import handlebars from 'express-handlebars';
+import swaggerJSDoc from 'swagger-jsdoc';
+import SwaggerUiExpress from 'swagger-ui-express';
 import { Server } from 'socket.io';
 import {__dirname} from './utils.js';
 import routerViews from './routes/views.routes.js';
@@ -29,6 +31,18 @@ mongoose.connect(mongoConection)
     .then(() => { console.log("Conectado a la base de datos") })
     .catch(error => console.error("Error al conectar a la base de datos", error))
 
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.1",
+        info:{
+            title: "Documentación",
+            description: "Api clase Swagger",
+        },
+    },
+    apis: [`src/docs/**/*.yaml`], 
+};
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/apidocs", SwaggerUiExpress.serve, SwaggerUiExpress.setup(specs));
 
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')

@@ -1,0 +1,329 @@
+paths:
+  /api/carts/{cid}:
+    get:
+      summary: Obtener un carrito especifico.
+      tags:
+        - Carrito
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el id del carrito que desea obtener
+          schema:
+            type: String
+      responses:
+        "200":
+          description: El carrito fue obtenido correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "401":
+          description: Error por falta de permisos
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar el carrito
+      tags:
+        - Carrito
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el id del carrito que desea eliminar
+          schema:
+            type: String
+      responses:
+        "200":
+          description: El carrito fue eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "401":
+          description: Error por falta de permisos
+        "500":
+          description: Error interno del servidor
+  /api/carts/{cid}/products/{pid}:
+    delete:
+      summary: Eliminar un producto del carrito
+      tags:
+        - Carrito
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el id del carrito en el que se encuentra el producto a eliminar
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto que desea eliminar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El producto fue eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "401":
+          description: Error por falta de permisos
+        "500":
+          description: Error interno del servidor
+    put:
+      summary: Modificar la cantidad de productos que se encuentran en el carrito
+      tags:
+        - Carrito
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el id del carrito en el que se encuentra el producto a modificar
+          schema:
+            type: String
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto que desea modificar
+          schema:
+            type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateCart"
+      responses:
+        "200":
+          description: La cantidad del producto se modificó correctamente
+          content:
+            application/json:
+              schema:
+                type: Object
+                properties:
+                  status:
+                    type: String
+                  payload:
+                    $ref: "#components/schemas/Cart"
+        "500":
+          description: Error interno del servidor
+    post:
+      summary: Agregar productos al carrito
+      tags:
+        - Carrito
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el id del carrito que desea actualizar
+          schema:
+            type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateCart"
+      responses:
+        "200":
+          description: El producto se agregó correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: "#components/schemas/Product"
+        "500":
+          description: Error interno del servidor
+  /api/carts/{cid}/purchaser:
+    summary: Generar el ticket de compra
+    tags:
+      - Carrito
+    parameters:
+      - name: cid
+        in: path
+        required: true
+        description: cid es el id del carrito en la que se genera la compra
+        schema:
+          type: String
+    responses:
+      "200":
+        description: El ticket de compra se generó correctamente
+        content:
+          application/json:
+            schema:
+              type: Object
+              properties:
+                status:
+                  type: String
+                payload:
+                  $ref: "#components/schemas/Ticket"
+      "500":
+        description: Error interno del servidor
+
+components:
+  schemas:
+    Cart:
+      type: Object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id del carrito
+        products:
+          type: array
+          description: Productos dentro del carrito
+          properties:
+            _id:
+              type: ObjectId
+              decription: _id del producto
+            product:
+              type: Object
+              description: producto dentro del carrito
+            quantity:
+              type: Number
+              description: cantidad de cada producto
+      example:
+        _id: ObjectId("66a2d5ffb47142dfe8637006")
+        products:
+          [
+            {
+              _id: ObjectId("66a2d81cb6af060966e5befd"),
+              product: ObjectId("664e78aba044bab41c728d27"),
+              quantity: 1,
+            },
+          ]
+    Product:
+      type: Object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id del producto
+        title:
+          type: String
+          description: Titulo del producto
+        description:
+          type: String
+          description: Descripción del producto.
+        price:
+          type: Number
+          description: Precio del producto.
+        stock:
+          type: Number
+          description: Stock del producto.
+        category:
+          type: String
+          description: Categoria del producto
+        owner:
+          type: ObjectId
+          description: Id del propietario.
+      example:
+        _id: ObjectId("66c50fdc4f6ab114a6532b1a")
+        title: Campera de cuero
+        description: Disponible en 3 colores
+        price: 45000
+        stock: 15
+        category: Campera
+        owner: ObjectId("66c117f3d5085a2aedfa572e")
+    Ticket:
+      type: Object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id del ticket
+        code:
+          type: String
+          description: Codigo del ticket
+        purchase_datatime:
+          type: String
+          description: Fecha de la compra
+        amount:
+          type: Number
+          description: Monto de la compra
+        purchaser:
+          type: String
+          descripcion: Mail del comprador
+        products:
+          type: Object
+          description: Productos de la compra
+          properties:
+            productId:
+              type: ObjectId
+              description: Id del producto
+            price:
+              type: Number
+              description: Precio del producto
+            quantity:
+              type: Number
+              description: Cantidad del producto
+      example:
+        _id: ObjectId("66a6c98d02abf3b32ceda634")
+        code: "8052"
+        purchase_datatime: "28/7/2024"
+        amount: 45000
+        purchaser: "alexiafalcone1995@gmail.com"
+        products:
+          [
+            productId: ObjectId("66c50fdc4f6ab114a6532b1a"),
+            price: 45000,
+            quantity: 1,
+          ]
+  requestBodies:
+    UpdateProduct:
+      type: Object
+      properties:
+        title:
+          type: String
+          description: Titulo del producto
+        description:
+          type: String
+          description: Descripción del producto.
+        price:
+          type: Number
+          description: Precio del producto.
+        stock:
+          type: Number
+          description: Stock del producto.
+        category:
+          type: String
+          description: Categoria del producto
+      example:
+        title: Campera de cuero
+        description: Disponible en 3 colores
+        price: 45000
+        stock: 15
+        category: Campera
+    UpdateCart:
+      type: Object
+      properties:
+        products:
+          type: array
+          description: Productos dentro del carrito
+          properties:
+            _id:
+              type: ObjectId
+              decription: _id del producto
+            product:
+              type: Object
+              description: producto dentro del carrito
+            quantity:
+              type: Number
+              description: cantidad de cada producto
+      example:
+        products:
+          [
+            _id: ObjectId("66a2d822b6af060966e5bf05"),
+            product: ObjectId("664e78fca044bab41c728d29"),
+            quantity: 1,
+          ]

@@ -1,0 +1,172 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtener todos los productos
+      tags:
+        - Productos
+      responses:
+        "200":
+          description: Todos los productos fueron obtenidos correctamente.
+          content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#components/schemas/Product"
+        "401":
+          description: Error por falta de permisos.
+        "500":
+          description: Error interno del servidor.
+  /api/products/products:
+    post:
+      summary: Crear un producto.
+      tags:
+        - Productos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requesBodies/UpdateProduct"
+      responses:
+        "200":
+          description: El producto se creó correctamente.
+          content:
+            application/json:
+              schema:
+                type: Object
+                properties:
+                  status:
+                    type: String
+                  payload:
+                    $ref: "#components/schemas/Product"
+        "500":
+          description: Error interno del servidor.
+  /api/products/{pid}:
+    get:
+      summary: Obtener un producto específico
+      tags:
+        - Productos
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto que desea obtener
+          schema:
+            type: String
+      responses:
+        "200":
+          description: El producto se obtuvo corrrectamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Products"
+        "500":
+          description: Error interno del servidor.
+    put:
+      summary: Modificar un  producto.
+      tags:
+        - Productos
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto que desea obtener
+          schema:
+            type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateProduct"
+      responses:
+        "200":
+          description: El producto se modificó correctamente.
+          content:
+            application/json:
+              schema:
+                type: Object
+                properties:
+                  status:
+                    type: String
+                  payload:
+                    $ref: "#components/schemas/Product"
+        "500":
+          description: Error interno del servidor.
+    delete:
+      summary: Eliminar un producto.
+      tags:
+        - Productos
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto que desea obtener
+          schema:
+            type: String
+      responses:
+        "200":
+          description: Se elimino el producto correctamente
+        "500":
+          description: Error interno del servidor
+
+components:
+  schemas:
+    Product:
+      type: Object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id del producto
+        title:
+          type: String
+          description: Titulo del producto
+        description:
+          type: String
+          description: Descripción del producto.
+        price:
+          type: Number
+          description: Precio del producto.
+        stock:
+          type: Number
+          description: Stock del producto.
+        category:
+          type: String
+          description: Categoria del producto
+        owner:
+          type: ObjectId
+          description: Id del propietario.
+      example:
+        _id: ObjectId("664bec86aa7aeda32c5ace57")
+        title: Remera
+        description: Disponible en 3 colores.
+        price: 10000
+        stock: 15
+        category: Remera
+        owner: ObjectId("66c117f3d5085a2aedfa572e")
+  requestBodies:
+    UpdateProduct:
+      type: Object
+      properties:
+        title:
+          type: String
+          description: Titulo del producto
+        description:
+          type: String
+          description: Descripción del producto.
+        price:
+          type: Number
+          description: Precio del producto.
+        stock:
+          type: Number
+          description: Stock del producto.
+        category:
+          type: String
+          description: Categoria del producto
+      example:
+        title: Remera
+        description: Disponible en 3 colores
+        price: 10000
+        stock: 15
+        category: Remera

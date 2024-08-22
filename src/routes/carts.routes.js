@@ -5,18 +5,17 @@ import { isNotAdmin } from '../middleware/auth.js';
 const routerCart = Router()
 
 
-
 routerCart.post('/', createCartController);
 
 routerCart.get('/:cid', getCartController);
+
+routerCart.delete('/carts/:cid', deleteProductsInCartController);
 
 routerCart.post('/:cid/product/:pid', isNotAdmin, addProductController);
 
 routerCart.put('/:cid/products/:pid', upDateQuantityController);
 
 routerCart.delete('/:cid/product/:pid', deleteOneController);
-
-routerCart.delete('/carts/:cid', deleteProductsInCartController);
 
 routerCart.post('/:cid/purchase', purchaseCartController);
 
