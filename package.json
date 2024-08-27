@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node src/app.js --mode production",
-    "dev": "node src/app.js --mode development"
+    "dev": "node src/app.js --mode development",
+    "test": "mocha test/superTest.test.js"
   },
   "keywords": [],
   "author": "",
@@ -35,5 +36,10 @@
     "swagger-ui-express": "^5.0.1",
     "sweetalert2": "^11.11.0",
     "winston": "^3.13.1"
+  },
+  "devDependencies": {
+    "chai": "^5.1.1",
+    "mocha": "^10.7.3",
+    "supertest": "^7.0.0"
   }
 }
