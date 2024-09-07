@@ -7,8 +7,8 @@ const requester = supertest('http://localhost:8080');
 
 describe("Testing de la App", () => {
   describe("Test del router de sessions", () => {
+    let cookie
     it("Logueo de usuario premium", async function () {
-
       this.timeout(50000);
 
       const userMock = {
@@ -17,17 +17,27 @@ describe("Testing de la App", () => {
       };
       
       const loginResponse = await requester.post('/api/sessions/login').send(userMock)
-     
       const { statusCode, headers } = loginResponse;
-       //console.log(request);
       expect(statusCode).to.be.equal(302);
       
+      const cookieResult = headers['set-cookie'][0];
+      expect(cookieResult).to.be.ok;
+      cookie = {
+        name: cookieResult.split('=')[0],
+        value: cookieResult.split('=')[1]
+      }
+      expect(cookie.name).to.be.ok.and.equal('connect.sid')
+      expect(cookie.value).to.be.ok
 
-       const result = await requester.get('/api/session/current').set("Cookie", headers["set-cookie"]);
-       //console.log(result)
-       console.log(headers)
-      //  const { statusCode: _statusCode, _body: bodyResponse } = result;
-      //  expect(bodyResponse.payload.role).to.be.equal("premium");
+    });
+
+    it('Envía la cookie e ingresa a los datos del usuario', async function() {
+      this.timeout(50000)
+      const result = await requester.get('/api/session/current').set("Cookie", [`${cookie.name}=${cookie.value}`]);
+      console.log(result)
+      //console.log(headers)
+     //  const { statusCode: _statusCode, _body: bodyResponse } = result;
+     //  expect(bodyResponse.payload.role).to.be.equal("premium");
     });
   });
 
