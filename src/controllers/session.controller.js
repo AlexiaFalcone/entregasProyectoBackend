@@ -5,7 +5,7 @@ const managerUser = new userManager()
 const manager = new CartManegerDb()
 
 export const registerSessionController = async (req, res)=>{
-    
+    req.logger.info('Se registro el usuario');
     res.send({ status: 'success', message: 'Usuario registrado' });
 };
 export const failRegisterSessionController = async (req, res)=>{

@@ -17,7 +17,7 @@ describe("Testing de la App", () => {
       };
       
       const loginResponse = await requester.post('/api/sessions/login').send(userMock)
-      const { statusCode, headers } = loginResponse;
+      const { statusCode, headers} = loginResponse;
       expect(statusCode).to.be.equal(302);
       
       const cookieResult = headers['set-cookie'][0];
@@ -33,7 +33,7 @@ describe("Testing de la App", () => {
 
     it('Envía la cookie e ingresa a los datos del usuario', async function() {
       this.timeout(50000)
-      const result = await requester.get('/api/session/current').set("Cookie", [`${cookie.name}=${cookie.value}`]);
+      const result= await requester.get('/api/session/current').set("Cookie", [`${cookie.name}=${cookie.value}`]);
       console.log(result)
       //console.log(headers)
      //  const { statusCode: _statusCode, _body: bodyResponse } = result;

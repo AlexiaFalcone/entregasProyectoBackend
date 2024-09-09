@@ -1,8 +1,7 @@
 import {EErrors} from "../services/enum.js";
 
 export const errorHandler = (error, req, res, next) => {
-    console.log(error.cause)
-
+    console.log(error.code)
     switch (error.code) {
         case EErrors.INVALID_TYTPES_ERROR:
             res.send({ status: "Error", error: error.name })

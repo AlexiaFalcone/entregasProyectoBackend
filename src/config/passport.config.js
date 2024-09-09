@@ -13,6 +13,7 @@ const initializePassport = () => {
 
     passport.use('register', new localStrategy(
         { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
+
             const { first_name, last_name, email, age } = req.body
             try {
                 let userData = await userModel.findOne({ email: username });
@@ -28,17 +29,21 @@ const initializePassport = () => {
                     email,
                     age,
                     password: createHash(password),
+                    role: roleUser,
                     cart: newCart
                 }
-                if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
+                // if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
 
-                    newUser.role = "premium"
+                //     newUser.role = "admin"
 
-                } else {
-                    newUser.role = "usuario"
-                }
-
+                // } else {
+                //     newUser.role = "user"
+                // }
+                const roleUser = email === "adminCoder@coder.com" && password === "adminCod3r123"
+                ? "admin" 
+                : (role === "premium" ? "premium" : "user");
                 let result = await userModel.create(newUser)
+
                 return done(null, result)
             } catch (error) {
                 return done("No se pudo encontrar el usuario" + error)
