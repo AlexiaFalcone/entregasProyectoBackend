@@ -5,11 +5,11 @@ const managerUser = new userManager()
 const manager = new CartManegerDb()
 
 export const registerSessionController = async (req, res)=>{
-    req.logger.info('Se registro el usuario');
+
     res.send({ status: 'success', message: 'Usuario registrado' });
 };
 export const failRegisterSessionController = async (req, res)=>{
-    req.logger.error('Register failed');
+    
     res.send({ error: 'No se pudo registrar el usuario' });
 };
 
@@ -33,7 +33,7 @@ export const loginSessionController = async (req, res)=>{
 };
 
 export const failLoginSessionController = async (req, res)=>{
-    req.logger.error('Login failed')
+    
     res.send({error: 'No se pudo encontrar el usuario'})
 };
 
@@ -52,7 +52,7 @@ export const logoutSessionController = async (req, res)=>{
             res.redirect('/login');
         });
     } catch (error) {
-        req.logger.error('Logout failed');
+       
         res.status(500).json({ msg: 'No se pudo cerrar sesión.' });
     }
 };

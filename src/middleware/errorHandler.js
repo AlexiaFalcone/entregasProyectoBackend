@@ -11,7 +11,7 @@ export const errorHandler = (error, req, res, next) => {
             break;
 
         default:
-            res.send({status:"error", message: "Hubo un error, contacte al equipo de soporte."})
+            res.send({status:"Error", message: "Hubo un error, contacte al equipo de soporte."})
             break;
     }
     next();
