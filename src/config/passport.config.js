@@ -4,9 +4,6 @@ import githubStrategy from 'passport-github2';
 import userModel from '../dao/models/users.model.js';
 import { createHash, isValidPassword } from '../utils.js';
 import cartManagerDb from '../dao/manager/db/cartManagerDb.js';
-import { generateUserErrorInfo } from '../services/userErrorInfo.js';
-import CustomError from '../services/customError.js';
-import { EErrors } from '../services/enum.js';
 
 
 const cartManager = new cartManagerDb()
@@ -20,23 +17,20 @@ const initializePassport = () => {
 
             const { first_name, last_name, email, age, role } = req.body
             try {
-                let userData = await userModel.findOne({ email: username });
+                const userData = await userModel.findOne({ email: username });
+               
                 if (userData) {
                     console.log("El usuario ya existe")
                     return done(null, false)
                 }
 
-                if(!first_name || !last_name || !email){
-                    CustomError.createError({
-                        name: 'User creation error',
-                        cause: generateUserErrorInfo({first_name,last_name,email}),
-                        message: 'Error trying to create user',
-                        code: EErrors.INVALID_TYTPES_ERROR
-                    })
-                }
-
                 const newCart = await cartManager.createCart()
                 
+                 const roleUser = email === "adminCoder@coder.com" && password === "adminCod3r123"
+                 ? "admin" 
+                 : (role === "premium" ? "premium" : "user");
+                
+
                 const newUser = {
                     first_name,
                     last_name,
@@ -46,16 +40,7 @@ const initializePassport = () => {
                     role: roleUser,
                     cart: newCart
                 }
-                // if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
-
-                //     newUser.role = "admin"
-
-                // } else {
-                //     newUser.role = "user"
-                // }
-                const roleUser = email === "adminCoder@coder.com" && password === "adminCod3r123"
-                ? "admin" 
-                : (role === "premium" ? "premium" : "user");
+                console.log(newUser, "nuevo usuario")
 
                 let result = await userModel.create(newUser)
 

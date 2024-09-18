@@ -32,15 +32,49 @@ class userManager {
         try {
             const user = await userModel.findById({ _id: userId }).lean()
            
-            const newRole = user.role === 'usuario' ? 'premium' : 'usuario';
-            user.role = newRole
-
+           if(user.status == "complete"){
+               const newRole = user.role === 'user' ? 'premium' : 'user';
+               user.role = newRole
+           }else{
+            console.log("Debe cargar los documentos requeridos")
+           }
+           
             const newRoleUser = await userModel.updateOne({ _id: userId }, user)
             return newRoleUser
         } catch (error) {
             throw error
         }
+    };
+
+    async userDocuments(userId, identificacion, domicilio, estadoDeCuenta){
+
+        const user = await userModel.findById(userId);
+
+        const docs = [];
+
+        if(identificacion){
+            docs.push({name:"identificacion", reference:identificacion.filename})
+        }
+        if(domicilio){
+            docs.push({name:"domicilio", reference:domicilio.filename})
+        }
+        if(estadoDeCuenta){
+            docs.push({name:"estadoDeCuenta", reference:estadoDeCuenta.filename})
+        }
+        if(docs.length ===3){
+            user.status = "complete"
+        }else{
+            user.status = "incomplete"
+        }
+
+        user.documents = docs;
+
+        const userUpdate = await userModel.findByIdAndUpdate(user._id,user)
+
+        return userUpdate
     }
 }
+
+
 
 export default userManager

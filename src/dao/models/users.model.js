@@ -19,7 +19,23 @@ const userSchema = new mongoose.Schema({
             }
         ],
         default: []
-    }
+    },
+    documents: {
+        type: [
+            {
+                name: {type: String, require: true},
+                reference: {type: String, require: true}
+            }
+        ],
+        default: []
+    },
+    last_connection: { type: Date, default: null },
+    status:{
+        type: String,
+        require: true,
+        enums: ["complete", "incomplete", "pending"],
+        default: "pending"
+    },
 });
 
 const userModel = mongoose.model(userCollection, userSchema);
