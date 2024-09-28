@@ -31,7 +31,7 @@ btnDelete.forEach((button)=>{
     button.addEventListener('click', async(event)=>{
         event.preventDefault();
 
-        const productId = event.target.previousElementSibling.previousElementSibling.previousElementSibling.textContent.substring(3);
+        const productId = event.target.previousElementSibling.previousElementSibling.textContent.substring(3);
         console.log(productId)
 
         const deleteResponse = await fetch(`/api/products/${productId}`, {method: "DELETE"});
@@ -42,6 +42,7 @@ btnDelete.forEach((button)=>{
                title: 'El producto se elimino de manera exitosa',
                timer: 1500
            });
+           location.reload(true)
        }else{
            console.log("No se pudo eliminar el producto.")
        }

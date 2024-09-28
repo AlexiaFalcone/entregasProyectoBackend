@@ -11,16 +11,18 @@ const usersManager = new userManager()
 export const getProductViewController = async (req, res)=>{
     try {
         const userData = req.session.user
+        const isAdmin = userData.role == 'admin'
         let { limit = 10, page = 1, sort, category } = req.query;
         limit = parseInt(limit);
         page = parseInt(page);
         let { status, result } = await manager.getProductsPaginate(page, category, sort);
-  
+          
         const { docs, totalPages, prevPage, nextPage, hasPrevPage, hasNextPage, prevLink, nextLink } = result
   
         return res.render('home', {
            status: status,
            docs,
+           isAdmin, 
            totalPages,
            page,
            prevPage,
@@ -29,8 +31,7 @@ export const getProductViewController = async (req, res)=>{
            hasNextPage,
            prevLink,
            nextLink,
-           userData, 
-           isAdmin: userData.role == 'admin',
+           userData,   
         })
      } catch (error) {
         res.status(500).json({ msg: 'No se encontraron productos' })

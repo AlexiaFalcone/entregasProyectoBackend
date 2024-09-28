@@ -7,13 +7,14 @@ import {generateProductErrorInfo} from "../services/productErrorInfo.js"
 const manager = new productManagerDb()
 
 export const getProductController = async (req, res) => {
+    
     try {
         let { limit = 10, page = 1, sort, category } = req.query;
         limit = parseInt(limit);
         page = parseInt(page);
         let { result, status } = await manager.getProductsPaginate(page, category, sort);
         let { docs, totalDocs, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage } = result;
-
+        
 
         return res.send({
             status: status,

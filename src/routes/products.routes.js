@@ -1,7 +1,7 @@
 
 import { Router } from 'express'
 import { getProductController, getProdByIdController, addProductController, upDateProductController, deleteProductController} from '../controllers/product.controller.js'
-import { isPremium } from '../middleware/auth.js'
+import { isAdmin, isPremium } from '../middleware/auth.js'
 
 const routerProd = Router()
 
@@ -13,6 +13,6 @@ routerProd.post('/products', isPremium, addProductController);
 
 routerProd.put('/:pid', isPremium, upDateProductController);
 
-routerProd.delete('/:pid', isPremium, deleteProductController);
+routerProd.delete('/:pid', isAdmin, deleteProductController);
 
 export default routerProd

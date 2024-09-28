@@ -16,7 +16,7 @@ export const isNotAuth = (req, res, next) => {
 
 export const isPremium = (req, res, next) =>{
     
-     if (req.session.user.role == "premium" && req.session.user.role == "admin"){
+     if (req.session.user.role == "premium" || req.session.user.role == "admin"){
         return next()
      } else {
      res.send({error: 'No eres premium'})

@@ -32,8 +32,8 @@
         <p>Precio: ${{this.price}}</p>
         <p class="productId">ID:{{this._id}}</p>
         <input id="btnAddProd" type="submit" value="Agregar">
-        {{#if isAdmin}}
-        <input id="btnDeleteProd" type="submit" value="Eliminar">
+        {{#if ../isAdmin}}
+        <button id="btnDeleteProd">Eliminar</button>
         {{/if}}
         {{/each}}
     </div>
