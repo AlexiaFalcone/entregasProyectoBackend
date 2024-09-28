@@ -23,6 +23,14 @@ export const isPremium = (req, res, next) =>{
      }
 };
 
+export const isAdmin = (req, res, next) =>{
+    if(req.session.user.role == "admin"){
+        return next()
+    } else{
+        res.send({error: 'No eres admin'})
+    }
+};
+
 export const isNotAdmin = (req, res, next) =>{
    
     if (req.session.user.role == "user"){

@@ -1,9 +1,12 @@
 import productManagerDb from "../dao/manager/db/productManagerDb.js";
 import CartManegerDb from "../dao/manager/db/cartManagerDb.js";
+import userManager from "../dao/manager/db/userManagerDb.js";
+import userModel from "../dao/models/users.model.js";
 
 
 const manager = new productManagerDb()
 const managerCart = new CartManegerDb()
+const usersManager = new userManager()
 
 export const getProductViewController = async (req, res)=>{
     try {
@@ -83,7 +86,12 @@ export const restoreControllerView = async (req, res)=>{
 
 export const refreshPassControllerView = async (req, res)=>{
     res.render('refreshPassword')
-}
+};
+
+export const usersViewController = async (req, res)=>{
+    const users = await userModel.find()
+    res.render('users', {users})
+};
 
 
 

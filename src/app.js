@@ -21,6 +21,7 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { addLogger } from './utils/logger.js';
 import loggerRouter from './routes/logger.routes.js';
 import routerUser from './routes/users.routes.js';
+import exphbs from 'express-handlebars';
 
 const app = express()
 const PORT = portConection;
@@ -41,10 +42,21 @@ const swaggerOptions = {
     },
     apis: [`src/docs/**/*.yaml`], 
 };
+const hbs = exphbs.create({
+    defaultLayout: 'main',
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,   
+      allowProtoMethodsByDefault: true       
+    }
+  });
+
 const specs = swaggerJSDoc(swaggerOptions);
 app.use("/apidocs", SwaggerUiExpress.serve, SwaggerUiExpress.setup(specs));
 
-app.engine('handlebars', handlebars.engine())
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
+
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 

@@ -11,7 +11,7 @@ export const __dirname = dirname(__filename)
 
 // Hasheo de contraseña
 
-export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(50))
+export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 
 export const isValidPassword = (user, password) => bcrypt.compareSync(password, user.password)
 
