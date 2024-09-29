@@ -1,4 +1,6 @@
+import { sendProductDelete } from "../../../utils/email.js";
 import productModel from "../../models/products.model.js";
+import userModel from "../../models/users.model.js";
 
 
 class productManagerDb {
@@ -99,8 +101,21 @@ class productManagerDb {
 
     async deleteProduct(prodId) {
         try {
-            const deleteOne = await productModel.deleteOne({ _id: prodId })
-            return deleteOne
+            const product = await productModel.findById({_id: prodId}).lean()
+            if(product){
+                 const productOwner =  JSON.parse(JSON.stringify(product.owner));
+                 const owner = await userModel.findById({_id: productOwner}).lean();
+                 const email = owner.email
+                 if(owner.role == "premium"){
+                     await sendProductDelete(email, product)
+                     const deleteOne = await productModel.deleteOne({ _id: prodId })
+                    return deleteOne
+                 }else{
+                    console.log("No se pudo eliminar producto.")
+                 }
+             }else{
+                console.log("El producto no existe")
+             }
 
         } catch (error) {
             throw error

@@ -25,3 +25,16 @@ export const sendDeleteEmail = async (email)=> {
         </div>       `
     });
 };
+
+export const sendProductDelete = async (email, product)=>{
+    await transporter.sendMail({
+        from: emailConection,
+        to: email,
+        subject: 'Producto eliminado',
+        html: `
+        <div>
+        <h1>Se eliminó un producto que creaste</h1>
+        <h2>${product.title}</h2>
+        </div>       `
+    });
+};
