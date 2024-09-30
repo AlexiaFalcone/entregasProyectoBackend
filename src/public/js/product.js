@@ -23,7 +23,7 @@ btnAddToCart.forEach((button) => {
     })
 });
 
-//función para eliminar productos del carrito
+//Botón para eliminar productos 
 
 const btnDelete = document.querySelectorAll("#btnDeleteProd");
 
@@ -48,3 +48,28 @@ btnDelete.forEach((button)=>{
        }
     })
 });
+
+//Botón que te lleva al cart
+
+const btnCart = document.querySelectorAll("#btnCart")
+
+
+btnCart.forEach((button)=>{
+    button.addEventListener('click', async(event)=>{
+        event.preventDefault();
+        fetch(`/carts/${currentCartId}`, {method: "GET"})
+        .then(result=>{
+            if(result.status == 200){
+                window.location.replace(`/carts/${currentCartId}`)
+    }else{
+        console.log("No se pudo acceder al carrito")
+        Swal.fire({
+            icon: 'error',
+            text: 'No se pudo acceder al carrito',
+            timer: 1200
+          })
+    }})
+        
+    })
+})
+

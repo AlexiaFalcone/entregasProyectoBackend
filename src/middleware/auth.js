@@ -33,7 +33,7 @@ export const isAdmin = (req, res, next) =>{
 
 export const isNotAdmin = (req, res, next) =>{
    
-    if (req.session.user.role == "user"){
+    if (req.session.user.role == "user" || req.session.user.role == "premium"){
         return next()
     } else {
         res.send({error: 'Ruta exclusiva para usuarios'})

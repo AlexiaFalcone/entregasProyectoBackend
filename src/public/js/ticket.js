@@ -13,8 +13,10 @@ btnSendTicket.forEach((button) => {
                 title: 'Se realizó la compra correctamente',
                 timer: 1500
             });
+            window.location.replace('/products')
         }else{
             console.log("No se pudo agregar el producto.")
         }
+
     })
 });

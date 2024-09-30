@@ -115,7 +115,7 @@ class CartManegerDb {
         }
     };
 
-    async purchaseCart(cartId){
+    async purchaseCart(cartId, email){
         try {
             const cart = await cartModel.find({_id:cartId}).lean().populate('products.product');
             if(cart[0]){
@@ -153,16 +153,16 @@ class CartManegerDb {
                     code: orderCode,
                     purchase_datetime: new Date().toLocaleDateString(),
                     amount: total,
-                    purchaser: req.session.user.email,
+                    purchaser: email,
                     products: ticketProducts
                 }
                 
                 const ticketCreated = await ticketModel.create(newTicket);
                 
-                res.send({status: 'success', message: 'La compra se efectuó correctamente', payload: ticketCreated})
+                return ticketCreated
     
             }else{
-                res.send({status: 'error', message: 'El carrito no existe'})
+                console.log("No se pudo crear el ticket")
             }
     
         } catch (error) {

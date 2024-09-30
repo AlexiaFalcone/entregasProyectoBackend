@@ -45,7 +45,10 @@ export const getCartViewController = async (req, res)=>{
         const cartView = await managerCart.getCart(cid);
         const productCart = cartView[0].products
  
-       return res.render('cart', {productCart})
+       return res.render('cart', 
+        {productCart,
+         cid   
+        })
  
     } catch (error) {
        res.status(500).json({ msg: 'No se encontró el carrito' })

@@ -22,8 +22,9 @@
 <form action="/api/sessions/logout" method="POST">
     <button type="submit">Cerrar sesión</button>
 </form>
-<p>Bienvenido {{userData.first_name}} {{userData.last_name}}</p>
+<button id="btnCart">Mi Carrito</button>
 <input type="hidden" id="currentCartId" value={{userData.cart}}>
+<p>Bienvenido {{userData.first_name}} {{userData.last_name}}</p>
 <div>
     <h1>PRODUCTOS DISPONIBLES</h1>
     <div>

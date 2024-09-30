@@ -89,8 +89,9 @@ export const deleteProductsInCartController = async (req, res) => {
 export const purchaseCartController = async (req, res) => {
     try {
         const cartId = req.params.cid;
-        const newTicket = await manager.purchaseCart(cartId);
-        res.send(newTicket);
+        const email = req.session.user.email
+        const newTicket = await manager.purchaseCart(cartId, email);
+        res.send({status:'success', message: 'la compra se efectuo correctamente', payload: newTicket});
     } catch (error) {
         res.status(500).json({ msg: 'No se pudo crear el ticket' })
     }
